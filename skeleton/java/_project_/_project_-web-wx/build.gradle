@@ -1,0 +1,31 @@
+
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+description = 'Web Wx Portal'
+
+dependencies {
+    compile project(':_project_-model')
+    compile project(':_project_-common')
+    compile project(':_project_-service')
+    compile project(':_project_-serviceImpl')
+    compile 'com.github.yamingd.argo:argo-web:2.4.1'
+    compile 'com.github.yamingd.argo:wx-model:2.2.0'
+    compile 'com.github.yamingd.argo:wx-service:2.2.0'
+    compile 'com.github.yamingd.argo:wx-serviceImpl:2.2.0'
+    compile 'com.github.yamingd.argo:wx-controllers:2.2.0'
+}
+
+gretty {
+    overlay ':_project_-web-res'
+    httpPort = 8480
+    contextPath = "/"
+    servletContainer = 'jetty9'
+}
+
+war {
+
+    into("/WEB-INF/classes"){
+        from '../web-res/src/main/resources'
+    }
+}

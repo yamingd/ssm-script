@@ -1,0 +1,5 @@
+description = '_project_-common'
+
+dependencies {
+    compile project(':_project_-model')
+}

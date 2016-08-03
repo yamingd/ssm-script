@@ -1,0 +1,18 @@
+# redis缓存配置
+
+# 最多活跃连接数
+maxActive: 100
+# 最多空闲连接数
+maxIdle: 5
+# 连接超时
+timeout: 5000
+# 服务器
+host: 112.74.17.214
+port: 63790
+# 从连接池获取连接后先测试是否可用
+testOnBorrow: true
+testWhileIdle: true
+# 服务器存活检查间隔(秒)
+aliveCheck: 300
+# 服务器访问密码
+# passwd: abc@2016!

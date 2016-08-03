@@ -1,0 +1,31 @@
+
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+description = 'Web Admin'
+
+dependencies {
+    compile project(':_project_-model')
+    compile project(':_project_-common')
+    compile project(':_project_-service')
+    compile project(':_project_-serviceImpl')
+    compile 'com.github.yamingd.argo:argo-web:2.4.2'
+}
+
+gretty {
+    overlay ':_project_-web-res'
+    httpPort=8180
+    contextPath ="/"
+    servletContainer = 'jetty9'
+
+    debugPort = 5005
+    debugSuspend = true
+}
+
+war {
+
+    into("/WEB-INF/classes"){
+        from '../web-res/src/main/resources'
+    }
+
+}

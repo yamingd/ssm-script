@@ -1,0 +1,30 @@
+
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+description = 'Web Mobile API'
+
+dependencies {
+    apt 'com.github.yamingd.argo:argo-doclet:2.1.0'
+    compile project(':_project_-model')
+    compile project(':_project_-common')
+    compile project(':_project_-service')
+    compile project(':_project_-serviceImpl')
+    compile 'com.github.yamingd.argo:annotations:2.2.0'
+    compile 'com.github.yamingd.argo:argo-web:2.4.2'
+}
+
+
+gretty {
+    overlay ':_project_-web-res'
+    httpPort = 8280
+    contextPath = "/"
+    servletContainer = 'jetty9'
+}
+
+war {
+
+    into("/WEB-INF/classes"){
+        from '../web-res/src/main/resources'
+    }
+}
