@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-# argo-script
+# ssm-script
+spring, spring mvc, mybatis project skelton
 
 # prepare python
 
@@ -41,8 +41,5 @@ OR
 https://pypi.python.org/pypi/MySQL-python/1.2.5
 
 ```
-=======
-# ssm-script
-spring, spring mvc, mybatis project skelton
 
->>>>>>> bbd68821ab5d7eac816446700c504ea193bc9be9
+
