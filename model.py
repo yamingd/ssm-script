@@ -25,7 +25,7 @@ def gen_java_model(prjinfo, minfo):
     
     for table in minfo['tables']:
         kwargs['_tbi_'] = table
-        fname = os.path.join(fpath, table.java.name + 'VO.java')    
+        fname = os.path.join(fpath, table.java.name + '.java')    
         render_template(fname, 'entity.mako', **kwargs)
 
 def start(prjinfo):

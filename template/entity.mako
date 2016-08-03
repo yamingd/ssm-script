@@ -7,7 +7,7 @@ import org.msgpack.annotation.MessagePackMessage;
 import java.util.Date;
 import java.io.Serializable;
 
-import {{ _tbi_.java.model_ns }}.{{ _tbi_.java.name }};
+import {{ _tbi_.java.model_ns }}.gen.{{ _tbi_.java.name }}Gen;
 
 {% for r in _tbi_.impJavas %}
 import {{r.model_ns}}.{{r.name}};
@@ -18,27 +18,18 @@ import {{r.model_ns}}.{{r.name}};
  * {{ _tbi_.hint }}
  * Created by {{_user_}}.
  */
+@Table(name = "{{_tbi_.name}}")
 @MessagePackMessage
-public class {{_tbi_.java.name }}VO extends {{ _tbi_.java.name }} {
-	
-    public {{_tbi_.java.name }}VO(){
+public class {{_tbi_.java.name }} extends {{ _tbi_.java.name }}Gen {
 
-    }
 
-    public {{_tbi_.java.name }}VO({{ _tbi_.java.name }} item){
-
-{% for col in _tbi_.columns %}
-        this.set{{col.java.setterName}}(item.get{{ col.java.getterName }}());
-{% endfor %}
-
-    }
-
-	    /****引用实体****/
+	/****引用实体****/
 {% for ref in _tbi_.refFields %}
     /**
      *
      * {{ref.docComment}}
      */
+    @Transient
     protected {{ref.java.typeName}} {{ref.java.name}};
     public {{ref.java.typeName}} get{{ ref.java.getterName }}(){
         return this.{{ ref.java.name }};

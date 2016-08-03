@@ -13,12 +13,10 @@ import com.{{prj._company_}}.{{prj._project_}}.Values;
 
 import com.{{prj._company_}}.{{prj._project_}}.ConvertorBase;
 import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
-import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}}VO;
 import {{ _tbi_.pb.model_ns }}.{{_tbi_.pb.name}};
 
 {% for r in _tbi_.impJavas %}
 import {{ r.model_ns }}.{{r.name}};
-import {{ r.model_ns }}.{{r.name}}VO;
 import {{ r.pb.model_ns }}.{{r.pb.name}};
 import {{ r.convertor_ns }}.{{r.name}}Convertor;
 {% endfor %}
@@ -61,23 +59,21 @@ public class {{_tbi_.java.name}}Convertor extends ConvertorBase{
             builder.set{{col.java.setterName}}({{col.java.pbValue}});
         }
 {% endfor %}
-        if (item instanceof {{_tbi_.java.name}}VO){
-            {{_tbi_.java.name}}VO voItem = ({{_tbi_.java.name}}VO)item;
+
 {% for r in _tbi_.refFields %}
 
-            {{r.java.typeName}} {{r.java.name}} = voItem.get{{ r.java.getterName }}();
+        {{r.java.typeName}} {{r.java.name}} = item.get{{ r.java.getterName }}();
 {% if not r.repeated %}
-            if(null != {{r.java.name}}){
-                 builder.set{{ r.java.setterName }}({{r.java.refJava.name}}Convertor.toPB({{r.java.name}}));
-            }
+        if(null != {{r.java.name}}){
+             builder.set{{ r.java.setterName }}({{r.java.refJava.name}}Convertor.toPB({{r.java.name}}));
+        }
 {% else %}
-            if(null != {{r.java.name}}){
-                 builder.addAll{{ r.java.setterName }}({{ r.java.refJava.name }}Convertor.toPB({{ r.java.name }}));
-            }
+        if(null != {{r.java.name}}){
+             builder.addAll{{ r.java.setterName }}({{ r.java.refJava.name }}Convertor.toPB({{ r.java.name }}));
+        }
 {% endif %}
 
 {% endfor %}
-        }
         
         return builder.build();
     }
