@@ -45,7 +45,23 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 
     @Override
     public List<{{_tbi_.java.name}}> findList(UserIdentity currentUser, {{_tbi_.pk.java.typeName}}... ids) {
-        return null;
+        Preconditions.checkNotNull(ids, "id is NULL");
+        List<{{_tbi_.pk.java.typeName}}> itemIds = Lists.newArrayList(ids);
+        if (itemIds.size() == 0){
+            return Collections.emptyList();
+        }
+        List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}MapperSlave.selectIn(itemIds);
+        return list;
+    }
+
+    @Override
+    public List<{{_tbi_.java.name}}> findList(UserIdentity currentUser, List<{{_tbi_.pk.java.typeName}}> ids) {
+        Preconditions.checkNotNull(ids, "id is NULL");
+        if (ids.size() == 0){
+            return Collections.emptyList();
+        }
+        List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}MapperSlave.selectIn(ids);
+        return list;
     }
 
     @Override

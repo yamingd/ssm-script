@@ -24,6 +24,12 @@ public interface ServiceBase<T extends Serializable, PK extends Comparable> {
      */
     List<T> findList(UserIdentity currentUser, PK... ids);
     /**
+     * 按主键查找记录
+     * @param ids
+     * @return List
+     */
+    List<T> findList(UserIdentity currentUser, List<PK> ids);
+    /**
      * 按条件查找一条记录
      * @param criteria
      * @return T
