@@ -37,6 +37,17 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<bean id="{{ _module_ }}_sqlSessionFactory_r" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="{{ _module_ }}_dataSource_r" />
 		<property name="mapperLocations" value="classpath:mapper/{{_module_}}/*.xml" />
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageHelper">
+					<property name="properties">
+						<value>
+							dialect=mysql
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
 	</bean>
 
 	<bean id="{{ _module_ }}_MapperScannerConfigurer_r" class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -44,7 +55,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		<property name="sqlSessionFactoryBeanName" value="{{ _module_ }}_sqlSessionFactory_r" />
         <property name="properties">
             <value>
-                mappers=tk.mybatis.mapper.common.Mapper
+                mappers=com.{{prj._company_}}.{{prj._name_}}.mapper.AllMapper
             </value>
         </property>
 	</bean>
@@ -60,6 +71,17 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<bean id="{{ _module_ }}_sqlSessionFactory_w" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="{{ _module_ }}_dataSource_w" />
 		<property name="mapperLocations" value="classpath:mapper/{{_module_}}/*.xml" />
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageHelper">
+					<property name="properties">
+						<value>
+							dialect=mysql
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
 	</bean>
 
 	<bean id="{{ _module_ }}_MapperScannerConfigurer_w" class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -67,7 +89,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		<property name="sqlSessionFactoryBeanName" value="{{ _module_ }}_sqlSessionFactory_w" />
         <property name="properties">
             <value>
-                mappers=tk.mybatis.mapper.common.Mapper
+                mappers=com.{{prj._company_}}.{{prj._name_}}.mapper.AllMapper
             </value>
         </property>
 	</bean>

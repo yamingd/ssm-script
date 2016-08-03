@@ -8,7 +8,7 @@
     <context id="mysqlTables" targetRuntime="MyBatis3Simple" defaultModelType="flat">
 
         <plugin type="com.github.yamingd.mybatis.FlexMapperPlugin">
-            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <property name="mappers" value="com.{{prj._company_}}.{{prj._name_}}.mapper.AllMapper"/>
             <!-- caseSensitive默认false，当数据库表名区分大小写时，可以将该属性设置为true -->
             <property name="caseSensitive" value="true"/>
         </plugin>

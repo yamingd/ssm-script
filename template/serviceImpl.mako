@@ -10,6 +10,9 @@ import com.google.common.base.Preconditions;
 import java.util.Collections;
 import java.util.List;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
 import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
 import {{ _tbi_.java.mapper_ns }}.r.{{_tbi_.java.name}}MapperSlave;
 import {{ _tbi_.java.mapper_ns }}.w.{{_tbi_.java.name}}MapperMaster;
@@ -96,14 +99,27 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 {% if qf.unique %}
     @Override
     public {{_tbi_.java.name}} findBy{{ qf.name }}(UserIdentity user, {{ qf.arglist }}) throws ServiceException {
-        Object[] params = new Object[]{ {{ qf.varlist }} };
-        return null;
+        {{_tbi_.java.name}} criteria = new {{_tbi_.java.name}}();
+{% for c in qf.cols %}        
+        criteria.set{{ c.java.setterName }}({{ c.name }});
+{% endfor %}
+        {{_tbi_.java.name}} item = {{_tbi_.java.varName}}MapperSlave.selectOne(criteria);
+        return item;
     }
 {% else %}
     @Override
     public Pagination<{{_tbi_.java.name}}> findBy{{ qf.name }}(UserIdentity user, Pagination<{{_tbi_.java.name}}> resultSet, {{ qf.arglist }}) throws ServiceException {
-        Object[] params = new Object[]{ {{ qf.varlist }}, resultSet.getStart()};
-        return null;
+        PageHelper.startPage(resultSet.getIndex(), resultSet.getSize());
+        PageHelper.orderBy("{{_tbi_.pk.name}}");
+        {{_tbi_.java.name}} criteria = new {{_tbi_.java.name}}();
+{% for c in qf.cols %}        
+        criteria.set{{ c.java.setterName }}({{ c.name }});
+{% endfor %}
+        Page<{{_tbi_.java.name}}> page = (Page<{{_tbi_.java.name}}>) {{_tbi_.java.varName}}MapperSlave.select(criteria);
+        Long total = page.getTotal();
+        resultSet.setTotal(total.intValue());
+        resultSet.setItems(page.getResult());
+        return resultSet;
     }
 {% endif %}
 
