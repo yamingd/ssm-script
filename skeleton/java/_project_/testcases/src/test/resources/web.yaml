@@ -1,0 +1,22 @@
+# 网站基本配置
+id: test01
+domain: http://localhost:8280
+assets: http://localhost:8280
+# 网站标题
+title: 测试
+name: test
+# 登录地址
+login: /account/login
+# 访问拒绝地址
+denied: /account/denied
+# 登出地址
+logout: /sessions/out
+anonymous: true
+attachmentview: X-Accel-Redirect
+# JS/CSS访问域名
+cdn: http://localhost:8280
+# 主站点访问域名, 用于运营后台
+frontEndDomain: http://localhost:8280
+csrfAge: 3600
+# 是否启用百度统计
+tongjiEnabled: false

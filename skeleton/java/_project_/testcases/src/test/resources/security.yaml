@@ -1,0 +1,20 @@
+# 密码加密盐
+passwdSalt: e72d9a5ef72d4668bad0d6965681fcb7
+
+# aes加密盐
+aes:
+  seed: 1ec9f71b36af0f1ec11b53b7fe319fa0
+
+# 会话Cookie配置
+cookie:
+  domain:
+  # 用户Cookie标识
+  name : x-auth
+  # 会话Cookie标识
+  sessionid : x-sess
+  # 是否走https
+  secure : false
+  # Cookie过期时间
+  age : 30
+  # Cookie内容加密私钥
+  secret: 82d6fff9102bf4031e93eb0049a466d8

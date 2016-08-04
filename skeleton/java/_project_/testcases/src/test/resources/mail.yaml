@@ -1,0 +1,23 @@
+# 邮件发送配置
+host: smtp.test.com
+port: 465
+user: noreply@test.cn‍
+passwd: test
+# 发送人名称
+nickname: test
+feedback: feedback@test.cn‍
+failedLimit: 1
+domain: "@test.cn"
+# 每次读取记录数
+batch: 100
+# 需要登录SMTP服务器
+auth: true
+# SMTP服务连接超时
+timeout: 5000
+# 扫描数据库表记录间隔
+interval: 1000000
+# 是否启用邮件发送服务
+enabled: false
+# JavaMail更多属性配置
+props:
+  mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory

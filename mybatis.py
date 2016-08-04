@@ -10,8 +10,8 @@ import dbm
 
 from common import *
 
-def gen_config_xml(prjinfo, minfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/_project_/_project_-web-res/src/main/resources/mybatis')
+def gen_config_xml(prjinfo, minfo, subfolder='_project_-web-res', branch='main'):
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/%s/src/%s/resources/mybatis' % (subfolder, branch))
     fpath = format_line(outfolder, prjinfo)
     if not os.path.exists(fpath):
         os.makedirs(fpath)
@@ -32,8 +32,8 @@ def gen_config_xml(prjinfo, minfo):
     print fname  
     render_template(fname, 'mybatis.mako', **kwargs)
 
-def gen_spring_xml(prjinfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/_project_/_project_-web-res/src/main/resources/spring')
+def gen_spring_xml(prjinfo, subfolder='_project_-web-res', branch='main'):
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/%s/src/%s/resources/spring' % (subfolder, branch))
     fpath = format_line(outfolder, prjinfo)
     if not os.path.exists(fpath):
         os.makedirs(fpath)
@@ -51,8 +51,8 @@ def gen_spring_xml(prjinfo):
     print fname  
     render_template(fname, 'spring-context.mako', **kwargs)
 
-def gen_jdbc_xml(prjinfo):
-    outfolder = os.path.join(prjinfo._root_, 'java/_project_/_project_-web-res/src/main/resources')
+def gen_jdbc_xml(prjinfo, subfolder='_project_-web-res', branch='main'):
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/%s/src/%s/resources' % (subfolder, branch))
     fpath = format_line(outfolder, prjinfo)
     if not os.path.exists(fpath):
         os.makedirs(fpath)
@@ -78,7 +78,11 @@ def start(prjinfo):
     dbm.read_tables(prjinfo)
 
     for minfo in prjinfo._modules_:
-        gen_config_xml(prjinfo, minfo)
+        gen_config_xml(prjinfo, minfo, subfolder='_project_-web-res', branch='main')
+        gen_config_xml(prjinfo, minfo, subfolder='testcases', branch='test')
 
-    gen_spring_xml(prjinfo)
-    gen_jdbc_xml(prjinfo)
+    gen_spring_xml(prjinfo, subfolder='_project_-web-res', branch='main')
+    gen_spring_xml(prjinfo, subfolder='testcases', branch='test')
+
+    gen_jdbc_xml(prjinfo, subfolder='_project_-web-res', branch='main')
+    gen_jdbc_xml(prjinfo, subfolder='testcases', branch='test')

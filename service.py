@@ -22,7 +22,7 @@ def render_serviceImpl(fname, **kwargs):
 
 def render_serviceTest(fname, **kwargs):
     with open(fname, 'w+') as fw:
-        fw.write(serve_template('serviceTest.mako', **kwargs))
+        fw.write(serve_template('serviceImplTest.mako', **kwargs))
 
 
 def gen_service(prjinfo, minfo):
@@ -64,6 +64,24 @@ def gen_serviceImpl(prjinfo, minfo):
         kwargs['_tbi_'] = table
         render_serviceImpl(fname, **kwargs)
 
+def gen_service_test(prjinfo, minfo):
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/testcases/src/test/java/com/_company_/_project_/service')
+    outfolder = format_line(outfolder, prjinfo)
+    fpath = os.path.join(outfolder, minfo['ns'])
+    if not os.path.exists(fpath):
+        os.makedirs(fpath)
+
+    kwargs = {}
+    kwargs['prj'] = prjinfo
+    kwargs['emm'] = prjinfo.emm
+    kwargs['minfo'] = minfo
+    kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    kwargs['_module_'] = minfo['ns']
+
+    for table in minfo['tables']:
+        fname = os.path.join(fpath, table.java.name + 'ServiceImplTest.java')
+        kwargs['_tbi_'] = table
+        render_serviceTest(fname, **kwargs)
 
 def start(prjinfo):
     if not os.path.exists(prjinfo._root_):
@@ -74,3 +92,4 @@ def start(prjinfo):
     for minfo in prjinfo._modules_:
         gen_service(prjinfo, minfo)
         gen_serviceImpl(prjinfo, minfo)
+        gen_service_test(prjinfo, minfo)
