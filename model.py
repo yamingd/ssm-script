@@ -28,6 +28,7 @@ def gen_java_model(prjinfo, minfo):
         fname = os.path.join(fpath, table.java.name + '.java')    
         render_template(fname, 'entity.mako', **kwargs)
 
+
 def start(prjinfo):
     if not os.path.exists(prjinfo._root_):
         os.makedirs(prjinfo._root_)

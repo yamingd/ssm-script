@@ -83,6 +83,27 @@ def gen_service_test(prjinfo, minfo):
         kwargs['_tbi_'] = table
         render_serviceTest(fname, **kwargs)
 
+
+def gen_wrapperImpl(prjinfo, minfo):
+    outfolder = os.path.join(prjinfo._root_, 'java/_project_/_project_-serviceImpl/src/main/java/com/_company_/_project_/wrapper/impl')
+    outfolder = format_line(outfolder, prjinfo)
+    fpath = os.path.join(outfolder, minfo['ns'])
+    if not os.path.exists(fpath):
+        os.makedirs(fpath)
+
+    kwargs = {}
+    kwargs['prj'] = prjinfo
+    kwargs['emm'] = prjinfo.emm
+    kwargs['minfo'] = minfo
+    kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    kwargs['_module_'] = minfo['ns']
+
+    for table in minfo['tables']:
+        fname = os.path.join(fpath, table.java.name + 'WrapperImpl.java')
+        kwargs['_tbi_'] = table
+        render_template(fname, 'wrapper.mako', **kwargs)
+
+
 def start(prjinfo):
     if not os.path.exists(prjinfo._root_):
         os.makedirs(prjinfo._root_)
@@ -93,3 +114,5 @@ def start(prjinfo):
         gen_service(prjinfo, minfo)
         gen_serviceImpl(prjinfo, minfo)
         gen_service_test(prjinfo, minfo)
+        gen_wrapperImpl(prjinfo, minfo)
+

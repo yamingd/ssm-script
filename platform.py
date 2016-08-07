@@ -71,6 +71,7 @@ class JavaClass(object):
         self.service_ns = 'com.%s.%s.service.%s' % (table.prj._company_, table.prj._name_, table.package)
         self.mapper_impl_ns = 'com.%s.%s.mapper.impl.%s' % (table.prj._company_, table.prj._name_, table.package)
         self.service_impl_ns = 'com.%s.%s.service.impl.%s' % (table.prj._company_, table.prj._name_, table.package)
+        self.wrapper_impl_ns = 'com.%s.%s.wrapper.impl.%s' % (table.prj._company_, table.prj._name_, table.package)
 
     def dbFields(self):
         s = []

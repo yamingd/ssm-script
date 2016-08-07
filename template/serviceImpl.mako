@@ -7,6 +7,7 @@ import com.{{prj._company_}}.{{prj._name_}}.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
 import {{ _tbi_.java.mapper_ns }}.r.{{_tbi_.java.name}}MapperSlave;
 import {{ _tbi_.java.mapper_ns }}.w.{{_tbi_.java.name}}MapperMaster;
 import {{ _tbi_.java.service_ns }}.{{_tbi_.java.name}}Service;
+import {{ _tbi_.java.wrapper_impl_ns }}.{{_tbi_.java.name}}WrapperImpl;
 import com.{{prj._company_}}.{{prj._name_}}.service.impl.ServiceBaseImpl;
 
 /**
@@ -36,6 +38,12 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
      */
     @Autowired
     protected {{_tbi_.java.name}}MapperMaster {{_tbi_.java.varName}}MapperMaster;
+
+    /**
+     * 对象关联wrapper
+     */
+    @Autowired
+    protected {{_tbi_.java.name}}WrapperImpl {{_tbi_.java.varName}}WrapperImpl;
 
     @Override
     public {{_tbi_.java.name}} find(UserIdentity currentUser, {{_tbi_.pk.java.typeName}} id) throws EntityNotFoundException {
@@ -59,6 +67,21 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
         Preconditions.checkNotNull(ids, "id is NULL");
         if (ids.size() == 0){
             return Collections.emptyList();
+        }
+        List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}MapperSlave.selectIn(ids);
+        return list;
+    }
+
+    @Override
+    public List<{{_tbi_.java.name}}> findList(UserIdentity currentUser, String idDots) {
+        Preconditions.checkNotNull(idDots, "id is NULL");
+        String[] tmp = idDots.split(",");
+        if (tmp.length == 0){
+            return Collections.emptyList();
+        }
+        List<{{_tbi_.pk.java.typeName}}> ids = Lists.newArrayList();
+        for(String str : tmp){
+            ids.add(new {{_tbi_.pk.java.typeName}}(str));
         }
         List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}MapperSlave.selectIn(ids);
         return list;
