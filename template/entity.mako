@@ -9,6 +9,8 @@ import java.io.Serializable;
 
 import {{ _tbi_.java.model_ns }}.gen.{{ _tbi_.java.name }}Gen;
 
+import com.{{ prj._company_ }}.{{ prj._name_ }}.PrimaryKeyGetter;
+
 {% for r in _tbi_.impJavas %}
 import {{r.model_ns}}.{{r.name}};
 {% endfor %}
@@ -20,8 +22,12 @@ import {{r.model_ns}}.{{r.name}};
  */
 @Table(name = "{{_tbi_.name}}")
 @MessagePackMessage
-public class {{_tbi_.java.name }} extends {{ _tbi_.java.name }}Gen {
+public class {{_tbi_.java.name }} extends {{ _tbi_.java.name }}Gen implements PrimaryKeyGetter<{{ _tbi_.pk.java.typeName }}> {
 
+    @Override
+    public {{ _tbi_.pk.java.typeName }} getPrimaryKey() {
+        return this.get{{ _tbi_.pk.java.getterName }}();
+    }
 
 	/****引用实体****/
 {% for ref in _tbi_.refFields %}

@@ -36,6 +36,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 
 	<bean id="{{ _module_ }}_sqlSessionFactory_r" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="{{ _module_ }}_dataSource_r" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
 		<property name="mapperLocations" value="classpath:mapper/{{_module_}}/*.xml" />
 		<property name="plugins">
 			<array>
@@ -53,6 +54,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<bean id="{{ _module_ }}_MapperScannerConfigurer_r" class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.{{prj._company_}}.{{prj._name_}}.mapper.{{ _module_ }}.r" />
 		<property name="sqlSessionFactoryBeanName" value="{{ _module_ }}_sqlSessionFactory_r" />
+		<property name="mapperHelper" ref="mybatisMapperHelper" />
         <property name="properties">
             <value>
                 mappers=com.{{prj._company_}}.{{prj._name_}}.mapper.AllMapper
@@ -70,6 +72,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 
 	<bean id="{{ _module_ }}_sqlSessionFactory_w" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="{{ _module_ }}_dataSource_w" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
 		<property name="mapperLocations" value="classpath:mapper/{{_module_}}/*.xml" />
 		<property name="plugins">
 			<array>
@@ -87,6 +90,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<bean id="{{ _module_ }}_MapperScannerConfigurer_w" class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.{{prj._company_}}.{{prj._name_}}.mapper.{{ _module_ }}.w" />
 		<property name="sqlSessionFactoryBeanName" value="{{ _module_ }}_sqlSessionFactory_w" />
+		<property name="mapperHelper" ref="mybatisMapperHelper" />
         <property name="properties">
             <value>
                 mappers=com.{{prj._company_}}.{{prj._name_}}.mapper.AllMapper

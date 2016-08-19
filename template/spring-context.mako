@@ -15,6 +15,12 @@
 
     <import resource="classpath:/com/argo/freemarker/config.xml" />
 
+    <bean class="com.{{prj._company_}}.{{prj._name_}}.factory.RedisBucketBeanFactory" />
+
+    <bean class="com.{{prj._company_}}.{{prj._name_}}.mybatis.MybatisCacheBeanFactory" />
+
+    <bean id="mybatisMapperHelper" class="com.{{prj._company_}}.{{prj._name_}}.mybatis.MapperHelperExt" />
+
     <context:annotation-config />
     <aop:aspectj-autoproxy />
     <tx:annotation-driven/>
@@ -29,7 +35,8 @@
 
     <context:component-scan base-package="com.{{prj._company_}}.{{prj._name_}}">
         <context:include-filter type="regex" expression="com.{{prj._company_}}.{{prj._name_}}.service.impl.*"/>
-        <context:include-filter type="regex" expression="com.i{{prj._company_}}.{{prj._name_}}.beans.*"/>
+        <context:include-filter type="regex" expression="com.{{prj._company_}}.{{prj._name_}}.wrapper.impl.*"/>
+        <context:include-filter type="regex" expression="com.{{prj._company_}}.{{prj._name_}}.beans.*"/>
         <context:exclude-filter type="regex"
                                 expression=".*Test" />
         <context:exclude-filter type="regex"

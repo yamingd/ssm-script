@@ -5,6 +5,7 @@ import com.{{prj._company_}}.{{prj._name_}}.exception.EntityNotFoundException;
 import com.argo.security.UserIdentity;
 import com.{{prj._company_}}.{{prj._name_}}.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import com.google.common.base.Preconditions;
 import java.util.Collections;
@@ -19,7 +20,7 @@ import com.github.pagehelper.PageHelper;
 
 import com.{{prj._company_}}.{{prj._name_}}.service.ServiceTestCaseBase;
 import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
-import {{ _tbi_.java.service_impl_ns }}.{{_tbi_.java.name}}ServiceImpl;
+import {{ _tbi_.java.service_ns }}.{{_tbi_.java.name}}Service;
 
 /**
  * Created by dengyaming on 8/3/16.
@@ -27,7 +28,8 @@ import {{ _tbi_.java.service_impl_ns }}.{{_tbi_.java.name}}ServiceImpl;
 public class {{_tbi_.java.name}}ServiceImplTest extends ServiceTestCaseBase {
 
     @Autowired
-    {{_tbi_.java.name}}ServiceImpl {{_tbi_.java.varName}}ServiceImpl;
+    @Qualifier("{{_tbi_.java.varName}}ServiceImpl") 
+    {{_tbi_.java.name}}Service {{_tbi_.java.varName}}ServiceImpl;
 
     @Test
     public void test_find() {

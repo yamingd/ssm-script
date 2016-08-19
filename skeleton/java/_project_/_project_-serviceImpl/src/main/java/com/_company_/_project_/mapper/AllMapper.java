@@ -10,7 +10,11 @@ import java.util.List;
  */
 public interface AllMapper<T> extends Mapper<T> {
 
-    @SelectProvider(type = SelectInProvider.class, method = "dynamicSQL")
+    @SelectProvider(type = SelectExtProvider.class, method = "dynamicSQL")
     List<T> selectIn(List<Integer> itemIds);
+
+
+    @SelectProvider(type = SelectExtProvider.class, method = "dynamicSQL")
+    List<Integer> selectPrimaryKeys(T record);
 
 }
