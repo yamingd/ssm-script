@@ -1,0 +1,95 @@
+ext{
+
+    V_ARGO_SECURITY = "2.3.3"
+    V_ARGO_UTIL = "2.2.0"
+    V_ARGO_REDIS = "2.4.0"
+    V_ARGO_FREEEMARKER = "2.2.0"
+    V_ARGO_ANNOTATIONS = "2.2.0"
+    V_ARGO_WEB = "2.5.0"
+    V_ARGO_MAIL = "2.1.6"
+
+    V_DRUID = "1.0.18"
+    V_MYSQL = "5.1.36"
+    V_PROTOBUF = "2.6.1"
+    V_GUAVA = "18.0"
+
+    V_SPRING = "3.2.12.RELEASE"
+    V_MYBATIS = "3.3.1"
+    V_MYBATIS_SPRING = "1.2.5"
+    V_MYBATIS_MAPPER = "3.3.8"
+    V_MYBATIS_PAGER = "4.1.6"
+    V_MYBATIS_GEN = "1.3.2"
+
+    V_KRYO = "4.0.0"
+
+    argoDependencies = [
+            security : "com.github.yamingd.argo:argo-security:${V_ARGO_SECURITY}",
+            util : "com.github.yamingd.argo:argo-util:${V_ARGO_UTIL}",
+            redis : "com.github.yamingd.argo:argo-redis:${V_ARGO_REDIS}",
+            freemarker : "com.github.yamingd.argo:argo-freemarker:${V_ARGO_FREEEMARKER}",
+            annotations : "com.github.yamingd.argo:annotations:${V_ARGO_ANNOTATIONS}",
+            web : "com.github.yamingd.argo:argo-web:${V_ARGO_WEB}",
+            mail : "com.github.yamingd.argo:mail-service:${V_ARGO_MAIL}",
+            mailImpl : "com.github.yamingd.argo:mail-serviceImpl:${V_ARGO_MAIL}"
+    ]
+
+    springDependencies = [
+            jdbc : "org.springframework:spring-jdbc:${V_SPRING}",
+            tx : "org.springframework:spring-tx:${V_SPRING}",
+            test : "org.springframework:spring-test:${V_SPRING}"
+    ]
+
+    mybatisDependencies = [
+            mybatis : "org.mybatis:mybatis:${V_MYBATIS}",
+            spring : "org.mybatis:mybatis-spring:${V_MYBATIS_SPRING}",
+            mapper : "tk.mybatis:mapper:${V_MYBATIS_MAPPER}",
+            pager : "com.github.pagehelper:pagehelper:${V_MYBATIS_PAGER}",
+            generator : "org.mybatis.generator:mybatis-generator-core:${V_MYBATIS_GEN}"
+    ]
+
+    dubboDependencies = [
+            kryo : "com.esotericsoftware:kryo:${V_KRYO}",
+            kryoShaded : "com.esotericsoftware:kryo-shaded:${V_KRYO}",
+            serializers : "de.javakaffee:kryo-serializers:0.38"
+    ]
+
+    dataDependencies = [
+            druid : "com.alibaba:druid:${V_DRUID}",
+            mysql : "mysql:mysql-connector-java:${V_MYSQL}",
+            protobuf : "com.google.protobuf:protobuf-java:${V_PROTOBUF}",
+            validator: "org.hibernate:hibernate-validator:5.2.2.Final"
+    ]
+
+    commonDependencies = [
+            guava : "com.google.guava:guava:${V_GUAVA}",
+            lang3 : "org.apache.commons:commons-lang3:3.1",
+            codec : "commons-codec:commons-codec:1.10",
+            fileupload : "commons-fileupload:commons-fileupload:1.3.2",
+            pinyin4j : "com.belerweb:pinyin4j:2.5.0",
+            imgscalr : "org.imgscalr:imgscalr-lib:4.2",
+            javase : "net.glxn.qrgen:javase:2.0",
+            jdom2 : "org.jdom:jdom2:2.0.5",
+            javatuples : "org.javatuples:javatuples:1.2",
+            jsoup : "org.jsoup:jsoup:1.8.3",
+            fastjson : "com.alibaba:fastjson:1.2.8",
+            junit: "junit:junit:4.12"
+    ]
+
+    logDependencies = [
+            slf4j : "org.slf4j:slf4j-api:1.7.21",
+            jul : "org.slf4j:jul-to-slf4j:1.7.21",
+            logback : "ch.qos.logback:logback-classic:1.1.7"
+    ]
+
+    javaxDependencies = [
+            validation : "javax.validation:validation-api:1.1.0.Final",
+            annotation : "javax.annotation:javax.annotation-api:1.2",
+            inject : "javax.inject:javax.inject:1",
+            persistence : "javax.persistence:persistence-api:1.0.2"
+    ]
+
+    aopDependencies = [
+            aspectjrt : "org.aspectj:aspectjrt:1.8.7",
+            aspectjweaver : "org.aspectj:aspectjweaver:1.8.7"
+    ]
+}

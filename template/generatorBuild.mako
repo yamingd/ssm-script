@@ -15,13 +15,13 @@ configurations {
 }
 
 dependencies {
-    compile 'org.mybatis.generator:mybatis-generator-core:1.3.2'
-    compile 'tk.mybatis:mapper:3.3.8'
+    compile rootProject.ext.mybatisDependencies.generator
+    compile rootProject.ext.mybatisDependencies.mapper
 {% for m in _modules_ %}    
-    mybatisGenerator_{{m['ns']}} 'org.mybatis.generator:mybatis-generator-core:1.3.2'
-    mybatisGenerator_{{m['ns']}} 'mysql:mysql-connector-java:5.1.36'
-    mybatisGenerator_{{m['ns']}} 'tk.mybatis:mapper:3.3.8'
-    mybatisGenerator_{{m['ns']}} 'org.slf4j:slf4j-api:1.7.5'
+    mybatisGenerator_{{m['ns']}} rootProject.ext.mybatisDependencies.generator
+    mybatisGenerator_{{m['ns']}} rootProject.ext.dataDependencies.mysql
+    mybatisGenerator_{{m['ns']}} rootProject.ext.mybatisDependencies.mapper
+    mybatisGenerator_{{m['ns']}} rootProject.ext.logDependencies.slf4j
     mybatisGenerator_{{m['ns']}} files('../lib/dev-tools-1.0.jar')
 {% endfor %}
 }

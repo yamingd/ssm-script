@@ -10,8 +10,8 @@ dependencies {
     compile project(':_project_-common')
     compile project(':_project_-service')
     compile project(':_project_-serviceImpl')
-    compile 'com.github.yamingd.argo:annotations:2.2.0'
-    compile 'com.github.yamingd.argo:argo-web:2.5.0'
+    compile rootProject.ext.argoDependencies.annotations
+    compile rootProject.ext.argoDependencies.web
 }
 
 

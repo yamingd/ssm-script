@@ -5,13 +5,13 @@ dependencies {
     compile project(':_project_-service')
     compile project(':_project_-common')
 
-    compile 'org.springframework:spring-jdbc:3.2.12.RELEASE'
-    compile 'org.springframework:spring-tx:3.2.12.RELEASE'
-    
-    compile 'org.mybatis:mybatis:3.3.1'
-    compile 'org.mybatis:mybatis-spring:1.2.5'
-    compile 'tk.mybatis:mapper:3.3.8'
-    compile 'com.github.pagehelper:pagehelper:4.1.6'
+    compile rootProject.ext.springDependencies.jdbc
+    compile rootProject.ext.springDependencies.tx
 
-    // compile 'com.github.yamingd.argo:mail-serviceImpl:2.1.6'
+    compile rootProject.ext.mybatisDependencies.mybatis
+    compile rootProject.ext.mybatisDependencies.spring
+    compile rootProject.ext.mybatisDependencies.mapper
+    compile rootProject.ext.mybatisDependencies.pager
+
+    // compile compile rootProject.ext.argoDependencies.mailImpl
 }

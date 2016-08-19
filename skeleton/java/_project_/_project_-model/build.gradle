@@ -1,6 +1,6 @@
 description = 'model, protobuf'
 
 dependencies {
-	compile 'javax.persistence:persistence-api:1.0.2'
-    compile 'com.google.protobuf:protobuf-java:2.6.1'
+	compile rootProject.ext.javaxDependencies.persistence
+    compile rootProject.ext.dataDependencies.protobuf
 }
