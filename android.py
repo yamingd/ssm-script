@@ -142,9 +142,13 @@ def start(prjinfo):
     dbm.read_tables(prjinfo)
 
     for minfo in prjinfo._modules_:
+        if minfo['ns'] == 'system':
+            continue
         gen_mapper(prjinfo, minfo)
 
     for minfo in prjinfo.mobile:
+        if minfo['ns'] == 'system':
+            continue
         gen_event(prjinfo, minfo)
         gen_service(prjinfo, minfo)
         

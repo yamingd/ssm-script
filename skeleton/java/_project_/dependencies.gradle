@@ -21,6 +21,8 @@ ext{
     V_MYBATIS_GEN = "1.3.2"
 
     V_KRYO = "4.0.0"
+    V_LOG4j = "2.6.2"
+    V_SLF4j = "1.7.21"
 
     argoDependencies = [
             security : "com.github.yamingd.argo:argo-security:${V_ARGO_SECURITY}",
@@ -76,9 +78,16 @@ ext{
     ]
 
     logDependencies = [
-            slf4j : "org.slf4j:slf4j-api:1.7.21",
-            jul : "org.slf4j:jul-to-slf4j:1.7.21",
-            logback : "ch.qos.logback:logback-classic:1.1.7"
+            slf4j : "org.slf4j:slf4j-api:${V_SLF4j}",
+            jul : "org.slf4j:jul-to-slf4j:${V_SLF4j}",
+            logback : "ch.qos.logback:logback-classic:1.1.7",
+            log4japi : "org.apache.logging.log4j:log4j-api:${V_LOG4j}",
+            log4jcore : "org.apache.logging.log4j:log4j-core:${V_LOG4j}",
+            log4jbridge : "org.apache.logging.log4j:log4j-slf4j-impl:${V_LOG4j}",
+            jullog4j : "org.apache.logging.log4j:log4j-jul:${V_LOG4j}",
+            jcllog4j : "org.apache.logging.log4j:log4j-jcl:${V_LOG4j}",
+            log4jslf4j : "org.apache.logging.log4j:log4j-to-slf4j:${V_LOG4j}",
+            log4jFlume : "org.apache.logging.log4j:log4j-flume-ng:${V_LOG4j}"
     ]
 
     javaxDependencies = [

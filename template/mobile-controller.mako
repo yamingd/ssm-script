@@ -102,6 +102,7 @@ public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
         return actResponse.build();
     }
 
+{% if not minfo.readonly %}
     /**
      * @param form 默认参数, 有传入的参数自动构造. {@link Mobile{{ _tbi_.java.name }}Form}
      * @param result 默认参数, 传入参数的自动校验结果. 
@@ -200,5 +201,5 @@ public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
 
         return actResponse.build();
     }
-    
+{% endif %}    
 }

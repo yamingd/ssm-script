@@ -6,6 +6,7 @@ import com.google.common.base.MoreObjects;
 import org.msgpack.annotation.MessagePackMessage;
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
 
 import {{ _tbi_.java.model_ns }}.gen.{{ _tbi_.java.name }}Gen;
 

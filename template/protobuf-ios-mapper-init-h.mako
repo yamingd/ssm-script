@@ -8,10 +8,13 @@
 
 {% for minfo in prj._modules_ %}
 
+{% if minfo['ns'] != 'system' %}
 // {{minfo['ns']}}
 {% for t in minfo['tables'] %}
 @class {{t.pb.name}}Mapper;
 {% endfor %}
+{% endif %}
+
 {% endfor %}
 
 @interface PBMapperInit : NSObject

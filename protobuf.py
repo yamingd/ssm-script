@@ -106,6 +106,8 @@ def start(prjinfo):
     for minfo in prjinfo._modules_:
         gen_convertor(prjinfo, minfo)
         gen_proto(prjinfo, minfo, java_base, 'java')
+        if minfo['ns'] == 'system':
+            continue
         gen_proto(prjinfo, minfo, android_base, 'android')
         gen_proto(prjinfo, minfo, ios_base, 'ios')
     

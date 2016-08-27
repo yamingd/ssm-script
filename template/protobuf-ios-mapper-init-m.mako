@@ -9,11 +9,12 @@
 #import "PBMapperInit.h"
 
 {% for minfo in prj._modules_ %}
-
+{% if minfo['ns'] != 'system' %}
 // {{minfo['ns']}}
 {% for t in minfo['tables'] %}
 #import "{{t.pb.name}}Mapper.h"
 {% endfor %}
+{% endif %}
 {% endfor %}
 
 @implementation PBMapperInit
@@ -35,11 +36,12 @@
 -(void)start{
 
 {% for minfo in prj._modules_ %}
-
+{% if minfo['ns'] != 'system' %}
 	// {{minfo['ns']}}
 {% for t in minfo['tables'] %}
 	[[{{t.pb.name}}Mapper instance] prepare];
 {% endfor %}
+{% endif %}
 {% endfor %}
 
 }

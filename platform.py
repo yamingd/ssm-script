@@ -306,6 +306,8 @@ class MySqlTable(object):
 class MySqlRef(object):
     """docstring for RefField"""
     def __init__(self, column, obj_pkgs):
+        print 'MySqlRef: ', column.name, column.comment, column.table.name
+
         self.column = column
         self.comment = column.comment
         i = self.comment.index('.')
@@ -328,7 +330,6 @@ class MySqlRef(object):
         #    self.mark = 'repeated'  # many
         #    self.ref_javatype = 'List<%s>' % self.ref_obj.entityName
         
-        print 'MySqlRef: ', column.name, column.comment, self.table.name
         self.initJava()
         self.initProtobuf()
 

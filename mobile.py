@@ -24,6 +24,9 @@ def gen_controller(prjinfo, minfo):
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
     kwargs['_user_'] = prjinfo._user_
     kwargs['_module_'] = minfo['ns']
+    v = minfo.get('readonly', False)
+    if not v:
+        minfo['readonly'] = False
 
     for name in minfo['tables']:
         table = prjinfo._tbrefs_[name]
@@ -34,8 +37,9 @@ def gen_controller(prjinfo, minfo):
         fname = os.path.join(fpath, 'Mobile' + table.java.name + 'Controller.java')
         render_template(fname, 'mobile-controller.mako', **kwargs)
 
-        fname = os.path.join(fpath, 'Mobile' + table.java.name + 'Form.java')
-        render_template(fname, 'mobile-form.mako', **kwargs)
+        if not v:
+            fname = os.path.join(fpath, 'Mobile' + table.java.name + 'Form.java')
+            render_template(fname, 'mobile-form.mako', **kwargs)
 
 
 def start(prjinfo):
