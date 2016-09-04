@@ -14,8 +14,10 @@ message {{_tbi_.pb.name}} {
 
 {% set count = _tbi_.columns | length %}
 {% for r in _tbi_.refFields %}
+{% if 't_sys' not in r.comment %}
     {{ r.pb.mark }} {{ r.pb.package }}{{ r.pb.typeName }} {{ r.pb.name }} = {{ count + 1}};
 {% set count = count +1 %}
+{% endif %}
 {% endfor %}
 
 }

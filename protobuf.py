@@ -104,10 +104,10 @@ def start(prjinfo):
     gen_sh(prjinfo, ios_base, 'protobuf-sh-ios.mako')
 
     for minfo in prjinfo._modules_:
+        if 'protoc' in minfo and not minfo['protoc']:
+            continue
         gen_convertor(prjinfo, minfo)
         gen_proto(prjinfo, minfo, java_base, 'java')
-        if minfo['ns'] == 'system':
-            continue
         gen_proto(prjinfo, minfo, android_base, 'android')
         gen_proto(prjinfo, minfo, ios_base, 'ios')
     

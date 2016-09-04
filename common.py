@@ -56,7 +56,8 @@ def gen_file(src, dst, prjinfo):
     #print src
     #print dst
     if os.path.isdir(src):
-        os.makedirs(dst)
+        if not os.path.exists(dst):
+            os.makedirs(dst)
     else:
         if src.endswith('.jar'):
             shutil.copyfile(src, dst)

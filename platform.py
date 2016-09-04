@@ -248,7 +248,8 @@ class MySqlTable(object):
                 self.refFields.append(c.ref)
                 if c.ref.table.name != self.name:
                     self.impJavas.append(c.ref)
-                    self.impPBs.append(c.ref)
+                    if not 't_sys' in c.comment:
+                        self.impPBs.append(c.ref)
 
         tmp = {}
         for r in self.impJavas:

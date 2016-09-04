@@ -1,0 +1,14 @@
+description = '_project_ tasks'
+
+dependencies {
+    compile project(':_project_-common')
+    compile project(':_project_-model')
+    compile project(':_project_-service')
+    compile project(':_project_-serviceImpl')
+
+    compile rootProject.ext.commonDependencies.junit
+    compile rootProject.ext.springDependencies.test
+    compile rootProject.ext.commonDependencies.jsoup
+    compile rootProject.ext.commonDependencies.fastjson
+
+}

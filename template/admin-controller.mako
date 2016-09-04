@@ -35,15 +35,16 @@ public class Admin{{_tbi_.java.name}}Controller extends AdminBaseController {
 	
 	@Autowired
     private {{_tbi_.java.name}}Service {{_tbi_.java.varName}}Service;
+
+    private int pageSize = 100;
     
     @RequestMapping(value="list", method = RequestMethod.GET)
-    public ModelAndView all(ModelAndView model, HttpServletRequest request, HttpServletResponse response,
-                            @PathVariable Integer page) throws Exception {
+    public ModelAndView all(ModelAndView model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         UserIdentity user = getCurrentUser();                    
         Pagination<{{_tbi_.java.name}}> result = new Pagination<{{_tbi_.java.name}}>();
         result.setIndex(1);
-        result.setSize(20);
+        result.setSize(pageSize);
 
         //TODO: service function
 
@@ -54,15 +55,14 @@ public class Admin{{_tbi_.java.name}}Controller extends AdminBaseController {
     }
 
 
-    @RequestMapping(value="{page}/{start}", method = RequestMethod.GET)
+    @RequestMapping(value="list/{page}", method = RequestMethod.GET)
     public ModelAndView all(ModelAndView model, HttpServletRequest request, HttpServletResponse response,
-                            @PathVariable Integer page,
-                            @PathVariable Integer start) throws Exception {
+                            @PathVariable Integer page) throws Exception {
 
         UserIdentity user = getCurrentUser();                    
         Pagination<{{_tbi_.java.name}}> result = new Pagination<{{_tbi_.java.name}}>();
         result.setIndex(page);
-        result.setSize(20);
+        result.setSize(pageSize);
 
         //TODO: service function
 
@@ -126,7 +126,7 @@ public class Admin{{_tbi_.java.name}}Controller extends AdminBaseController {
         {{_tbi_.java.name}} item = form.to();
         item.set{{_tbi_.pk.java.setterName}}(id);
 
-        {{_tbi_.java.varName}}Service.save(user, item);
+        {{_tbi_.java.varName}}Service.saveNotNull(user, item);
 
         return actResponse;
     }

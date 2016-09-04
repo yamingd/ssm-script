@@ -104,8 +104,7 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
     @Override
     public {{_tbi_.java.name}} create(UserIdentity currentUser, {{_tbi_.java.name}} item) throws ServiceException {
         Preconditions.checkNotNull(item, "item is NULL");
-        {{_tbi_.pk.java.typeName}} id = {{_tbi_.java.varName}}MapperMaster.insertSelective(item);
-        item.set{{_tbi_.pk.java.setterName}}(id);
+        {{_tbi_.java.varName}}MapperMaster.insertSelective(item);
         return item;
     }
 
@@ -134,6 +133,25 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
         return {{_tbi_.java.varName}}MapperMaster.delete(item);
     }
 
+    @Override
+    public Pagination<{{_tbi_.java.name}}> findAll(UserIdentity currentUser, Pagination<{{_tbi_.java.name}}> resultSet, {{_tbi_.java.name}} criteria) throws ServiceException {
+        PageHelper.startPage(resultSet.getIndex(), resultSet.getSize());
+        PageHelper.orderBy("{{_tbi_.pk.name}} desc");
+
+        if (null == criteria) {
+            Page<{{_tbi_.java.name}}> page = (Page<{{_tbi_.java.name}}>){{_tbi_.java.varName}}MapperSlave.selectAll();
+            Long total = page.getTotal();
+            resultSet.setTotal(total.intValue());
+            resultSet.setItems(page.getResult());
+        }else{
+            Page<{{_tbi_.java.name}}> page = (Page<{{_tbi_.java.name}}>){{_tbi_.java.varName}}MapperSlave.select(criteria);
+            Long total = page.getTotal();
+            resultSet.setTotal(total.intValue());
+            resultSet.setItems(page.getResult());
+        }
+        return resultSet;
+    }
+
 {% for qf in _tbi_.funcs %}
 {% if qf.unique %}
     @Override
@@ -148,17 +166,25 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 {% else %}
     @Override
     public Pagination<{{_tbi_.java.name}}> findBy{{ qf.name }}(UserIdentity user, Pagination<{{_tbi_.java.name}}> resultSet, {{ qf.arglist }}) throws ServiceException {
-        PageHelper.startPage(resultSet.getIndex(), resultSet.getSize());
-        PageHelper.orderBy("{{_tbi_.pk.name}}");
         {{_tbi_.java.name}} criteria = new {{_tbi_.java.name}}();
 {% for c in qf.cols %}        
         criteria.set{{ c.java.setterName }}({{ c.name }});
 {% endfor %}
-        Page<{{_tbi_.java.name}}> page = (Page<{{_tbi_.java.name}}>) {{_tbi_.java.varName}}MapperSlave.select(criteria);
-        Long total = page.getTotal();
-        resultSet.setTotal(total.intValue());
-        resultSet.setItems(page.getResult());
-        return resultSet;
+        if (resultSet.getSize() > 0) {
+            // 分页读取
+            PageHelper.startPage(resultSet.getIndex(), resultSet.getSize());
+            PageHelper.orderBy("{{_tbi_.pk.name}}");
+            Page<{{_tbi_.java.name}}> page = (Page<{{_tbi_.java.name}}>) {{_tbi_.java.varName}}MapperSlave.select(criteria);
+            Long total = page.getTotal();
+            resultSet.setTotal(total.intValue());
+            resultSet.setItems(page.getResult());
+            return resultSet;
+        }else{
+            // 读取全部
+            List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}MapperSlave.select(criteria);
+            resultSet.setItems(list);
+            return resultSet;
+        }
     }
 {% endif %}
 

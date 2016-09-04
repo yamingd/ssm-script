@@ -61,7 +61,7 @@ public class {{_tbi_.java.name}}Convertor extends ConvertorBase{
 {% endfor %}
 
 {% for r in _tbi_.refFields %}
-
+{% if 't_sys' not in r.comment %}
         {{r.java.typeName}} {{r.java.name}} = item.get{{ r.java.getterName }}();
 {% if not r.repeated %}
         if(null != {{r.java.name}}){
@@ -72,7 +72,7 @@ public class {{_tbi_.java.name}}Convertor extends ConvertorBase{
              builder.addAll{{ r.java.setterName }}({{ r.java.refJava.name }}Convertor.toPB({{ r.java.name }}));
         }
 {% endif %}
-
+{% endif %}
 {% endfor %}
         
         return builder.build();

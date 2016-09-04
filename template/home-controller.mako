@@ -110,7 +110,7 @@ public class Home{{_tbi_.java.name}}Controller extends HomeBaseController {
         {{_tbi_.java.name}} item = form.to();
         item.set{{_tbi_.pk.java.setterName}}(id);
 
-        {{_tbi_.java.varName}}Service.save(user, item);
+        {{_tbi_.java.varName}}Service.saveNotNull(user, item);
 
         return actResponse;
     }

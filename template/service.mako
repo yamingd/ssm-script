@@ -16,6 +16,15 @@ import com.{{prj._company_}}.{{prj._name_}}.service.ServiceBase;
  * Created by {{_user_}}.
  */
 public interface {{_tbi_.java.name}}Service extends ServiceBase<{{_tbi_.java.name}}, {{_tbi_.pk.java.typeName}}>  {
+    
+    /**
+     * 分页读取
+     * resultSet需要设置size, index, start 三个属性
+     * @param resultSet
+     * @param criteria
+     * @return Pagination
+     */
+    Pagination<{{_tbi_.java.name}}> findAll(UserIdentity currentUser, Pagination<{{_tbi_.java.name}}> resultSet, {{_tbi_.java.name}} criteria) throws ServiceException;
 
 {% for qf in _tbi_.funcs %}
 {% if qf.unique %}

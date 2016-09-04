@@ -166,7 +166,7 @@ public class Mobile{{_tbi_.java.name}}Controller extends MobileBaseController {
         item.set{{_tbi_.pk.java.setterName}}(id);
 
         try{
-            item = {{_tbi_.java.varName}}Service.save(user, item);
+            item = {{_tbi_.java.varName}}Service.saveNotNull(user, item);
             PB{{_tbi_.java.name}} msg = {{_tbi_.java.name}}Convertor.toPB(item);
             actResponse.getBuilder().addData(msg.toByteString());
         } catch (ServiceException e) {
