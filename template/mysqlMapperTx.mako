@@ -1,4 +1,4 @@
-package {{ _tbi_.java.mapper_impl_ns }};
+package {{ _tbi_.java.mapper_ns }};
 
 import org.springframework.transaction.annotation.Transactional;
 

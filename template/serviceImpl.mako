@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
 import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
+import {{ _tbi_.java.mapper_ns }}.{{_tbi_.java.name}}Tx;
 import {{ _tbi_.java.mapper_ns }}.r.{{_tbi_.java.name}}MapperSlave;
 import {{ _tbi_.java.mapper_ns }}.w.{{_tbi_.java.name}}MapperMaster;
 import {{ _tbi_.java.service_ns }}.{{_tbi_.java.name}}Service;
@@ -53,7 +54,9 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 
     @Override
     public List<{{_tbi_.java.name}}> findList(UserIdentity currentUser, {{_tbi_.pk.java.typeName}}... ids) {
-        Preconditions.checkNotNull(ids, "id is NULL");
+        if (null == ids){
+            return Collections.emptyList();
+        }
         List<{{_tbi_.pk.java.typeName}}> itemIds = Lists.newArrayList(ids);
         if (itemIds.size() == 0){
             return Collections.emptyList();
@@ -64,8 +67,7 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 
     @Override
     public List<{{_tbi_.java.name}}> findList(UserIdentity currentUser, List<{{_tbi_.pk.java.typeName}}> ids) {
-        Preconditions.checkNotNull(ids, "id is NULL");
-        if (ids.size() == 0){
+        if (null == ids || ids.size() == 0){
             return Collections.emptyList();
         }
         List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}MapperSlave.selectIn(ids);
@@ -74,7 +76,9 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 
     @Override
     public List<{{_tbi_.java.name}}> findList(UserIdentity currentUser, String idDots) {
-        Preconditions.checkNotNull(idDots, "id is NULL");
+        if (idDots == null){
+            return Collections.emptyList();
+        }
         String[] tmp = idDots.split(",");
         if (tmp.length == 0){
             return Collections.emptyList();
@@ -102,6 +106,7 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
     }
 
     @Override
+    @{{_tbi_.java.name}}Tx
     public {{_tbi_.java.name}} create(UserIdentity currentUser, {{_tbi_.java.name}} item) throws ServiceException {
         Preconditions.checkNotNull(item, "item is NULL");
         {{_tbi_.java.varName}}MapperMaster.insertSelective(item);
@@ -109,6 +114,7 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
     }
 
     @Override
+    @{{_tbi_.java.name}}Tx
     public {{_tbi_.java.name}} save(UserIdentity currentUser, {{_tbi_.java.name}} item) throws ServiceException {
         Preconditions.checkNotNull(item, "item is NULL");
         {{_tbi_.java.varName}}MapperMaster.updateByPrimaryKey(item);
@@ -116,6 +122,7 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
     }
 
     @Override
+    @{{_tbi_.java.name}}Tx
     public {{_tbi_.java.name}} saveNotNull(UserIdentity currentUser, {{_tbi_.java.name}} item) throws ServiceException {
         Preconditions.checkNotNull(item, "item is NULL");
         {{_tbi_.java.varName}}MapperMaster.updateByPrimaryKeySelective(item);
@@ -123,12 +130,14 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
     }
 
     @Override
+    @{{_tbi_.java.name}}Tx
     public int removeBy(UserIdentity currentUser, {{_tbi_.pk.java.typeName}} id) throws ServiceException {
         Preconditions.checkNotNull(id, "id is NULL");
         return {{_tbi_.java.varName}}MapperMaster.deleteByPrimaryKey(id);
     }
 
     @Override
+    @{{_tbi_.java.name}}Tx
     public int remove(UserIdentity currentUser, {{_tbi_.java.name}} item) throws ServiceException {
         return {{_tbi_.java.varName}}MapperMaster.delete(item);
     }

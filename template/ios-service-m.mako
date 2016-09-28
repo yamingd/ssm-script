@@ -24,7 +24,7 @@
     NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/1/%ld", cursorId];
     [[APIClient shared] getPath:url params:nil withCallback:^(PAppResponse* response, NSError *error) {
         if (error) {
-            block(nil, error, NO);
+            block(response, error, NO);
         }else{
             NSArray* items = [APIClient dataToClass:response.data type:[{{_tbi_.pb.name}} class]];
             if (items.count > 0) {
@@ -49,7 +49,7 @@
     NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%d/%ld", page, cursorId];
     [[APIClient shared] getPath:url params:nil withCallback:^(PAppResponse* response, NSError *error) {
         if (error) {
-            block(nil, error, NO);
+            block(response, error, NO);
         }else{
             NSArray* items = [APIClient dataToClass:response.data type:[{{_tbi_.pb.name}} class]];
             if (items.count > 0) {
@@ -79,7 +79,7 @@
     NSString* url = [NSString stringWithFormat:@"/m/{{_tbi_.mvc_url()}}/%ld", itemId];
     [[APIClient shared] getPath:url params:nil withCallback:^(PAppResponse* response, NSError *error) {
         if (error) {
-            block(nil, error, NO);
+            block(response, error, NO);
         }else{
             NSArray* items = [APIClient dataToClass:response.data type:[{{_tbi_.pb.name}} class]];
             {{_tbi_.pb.name}}* item = nil;
@@ -118,7 +118,7 @@
 
 +(void)parseCreateReponse:(PAppResponse*)response error:(NSError*)error withCallback:(APIResponseBlock)block{
     if (error) {
-        block(nil, error, NO);
+        block(response, error, NO);
     }else{
         NSArray* items = [APIClient dataToClass:response.data type:[{{_tbi_.pb.name}} class]];
         {{_tbi_.pb.name}}* item = nil;
@@ -161,7 +161,7 @@
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [[APIClient shared] deletePath:url params:params withCallback:^(PAppResponse* response, NSError *error) {
         if (error) {
-            block(nil, error, NO);
+            block(response, error, NO);
         }else{
             if (response.code == 200) {
                 [[{{_tbi_.pb.name}}Mapper instance] removeBy:@(item.{{_tbi_.pk.pb.name}})];

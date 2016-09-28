@@ -58,7 +58,7 @@ def get_mysql_table_new(prj, pkg_name, db_name, tbl_name, prefix):
         index += 1
         if c.key:
             tbl.pks.append(c)
-
+    print tbl.pks        
     # index settings
     sql = text("select t.index_name, t.column_name, t.NON_UNIQUE from information_schema.statistics t where t.TABLE_SCHEMA = :x and t.TABLE_NAME = :y")
     rows = db.execute(sql, x=db_name, y=tbl_name).fetchall()

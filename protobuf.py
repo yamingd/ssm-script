@@ -41,7 +41,10 @@ def gen_convertor(prjinfo, minfo):
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
     kwargs['_module_'] = minfo['ns']
     
+    exls = minfo.get('pbexcludes', [])
     for table in minfo['tables']:
+        if table.name in exls:
+            continue
         fname = os.path.join(fpath, table.java.name + 'Convertor.java')
         kwargs['_tbi_'] = table
         render_template(fname, 'entity-convertor.mako', **kwargs)
@@ -61,7 +64,11 @@ def gen_proto(prjinfo, minfo, base_folder, lang):
     if not os.path.exists(outfolder):
         os.makedirs(outfolder)
     cmds = []
+    exls = minfo.get('pbexcludes', [])
+    # print 'exls: ', exls
     for table in minfo['tables']:
+        if table.name in exls:
+            continue
         kwargs['_tbi_'] = table
         fpath = os.path.join(outfolder, table.pb.name + "Proto.proto")
         if os.path.exists(fpath):

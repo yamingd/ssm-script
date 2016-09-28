@@ -7,7 +7,7 @@
 //
 
 #import "iOSBootstrap/SqliteMapper.h"
-#import "{{_tbi_.pb.name}}Proto.pb.h"
+#import "pb-models-all.h"
 
 {% for r in _tbi_.impPBs %}
 @class {{r.name}}Mapper; 

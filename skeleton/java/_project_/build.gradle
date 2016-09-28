@@ -12,9 +12,7 @@ allprojects {
 buildscript {
     repositories {
         mavenLocal()
-
-        maven { url 'http://maven.oschina.net/content/groups/public/' }
-
+        maven { url 'http://uk.maven.org/maven2/' }
         mavenCentral()
     }
     dependencies {
@@ -38,12 +36,9 @@ subprojects {
     }
 
     repositories {
-
         mavenLocal()
-
+        maven { url 'http://uk.maven.org/maven2/' }
         maven { url 'https://oss.sonatype.org/content/groups/public/' }
-        // maven { url 'http://maven.oschina.net/content/groups/public/' }
-
         mavenCentral()
     }
 
@@ -83,7 +78,7 @@ subprojects {
 
         compile rootProject.ext.logDependencies.slf4j
         compile rootProject.ext.logDependencies.logback
-
+        compile rootProject.ext.commonDependencies.quartz
     }
 
       apply from: '../jarwrap.gradle'

@@ -7,10 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
+
 #import "iOSBootstrap/AppBootstrap.h"
+#import "AMapFoundationKit/AMapFoundationKit.h"
+#import "AMapLocationKit/AMapLocationKit.h"
 
 @interface AppDelegate : AppBootstrap
 
+- (void)findLocation:(BOOL)errorNotice;
+
+-(BOOL)checkLocationStatus;
 
 @end
 

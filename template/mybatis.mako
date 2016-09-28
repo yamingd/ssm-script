@@ -100,34 +100,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 
 	<bean id="{{ _module_ }}_transactionManager_w" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="{{ _module_ }}_dataSource_w" />
+		<qualifier value="{{ _module_ }}Tx"/>
 	</bean>
-
-	<tx:advice id="{{ _module_ }}_transactionAdvice_w" transaction-manager="{{ _module_ }}_transactionManager_w">
-		<tx:attributes>
-			<tx:method name="add*" propagation="REQUIRED" />
-			<tx:method name="append*" propagation="REQUIRED" />
-			<tx:method name="insert*" propagation="REQUIRED" />
-			<tx:method name="save*" propagation="REQUIRED" />
-			<tx:method name="update*" propagation="REQUIRED" />
-			<tx:method name="modify*" propagation="REQUIRED" />
-			<tx:method name="edit*" propagation="REQUIRED" />
-			<tx:method name="delete*" propagation="REQUIRED" />
-			<tx:method name="remove*" propagation="REQUIRED" />
-			<tx:method name="repair" propagation="REQUIRED" />
-			<tx:method name="delAndRepair" propagation="REQUIRED" />
-
-			<tx:method name="get*" propagation="SUPPORTS" />
-			<tx:method name="find*" propagation="SUPPORTS" />
-			<tx:method name="load*" propagation="SUPPORTS" />
-			<tx:method name="search*" propagation="SUPPORTS" />
-			<tx:method name="datagrid*" propagation="SUPPORTS" />
-
-			<tx:method name="*" propagation="SUPPORTS" />
-		</tx:attributes>
-	</tx:advice>
-	<aop:config>
-		<aop:pointcut id="{{ _module_ }}_transactionPointcut_w" expression="execution(* com.{{prj._company_}}.{{prj._name_}}.service.impl.{{ _module_ }}.*Impl.*(..))" />
-		<aop:advisor pointcut-ref="{{ _module_ }}_transactionPointcut_w" advice-ref="{{ _module_ }}_transactionAdvice_w" />
-	</aop:config>
 
 </beans>

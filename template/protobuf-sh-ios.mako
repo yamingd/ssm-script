@@ -10,7 +10,7 @@ echo "${name}"
 
 namelower=$(echo $name | awk '{print tolower($0)}')
 
-_out="$path/../Protobuf/$module"
+_out="$path/../Models/$module"
 defile="$path/$nameProto.proto"
 
 if [[ -d $_out ]]
@@ -20,4 +20,5 @@ else
   mkdir -p $_out
 fi
 
+# protoc --proto_path=${path} $defile --objc_out=${_out}
 protoc --proto_path=${path} --plugin=/usr/local/Cellar/protobuf/protoc-gen-objc $defile --objc_out=${_out}

@@ -3,15 +3,21 @@
 //  _project_
 //
 //  Created by Yaming on 10/4/15.
-//  Copyright © 2015 _company_.com. All rights reserved.
+//  Copyright © 2015 _project_.com. All rights reserved.
 //
 
 #ifndef AppConfig_h
 #define AppConfig_h
 
+#define kYMDFormat @"yyyy-MM-dd"
+#define kHMSFormat @"HH:mm:ss"
+#define kDateTimeFormat @"yyyy-MM-dd HH:mm:ss"
+#define kDateTimeFormatS @"yyyy-MM-dd HH:mm:ss.SSSSSS"
+
 #define kListPageSize 20
 #define kAppName @"_project_"
-
+#define kAppTitle @"_project_"
+#define kImageUrlPrefix @"/"
 #define kAesSeed @"_project_"
 
 #define kQQKey @""
@@ -22,6 +28,18 @@
 
 #define kTongJiKey @""
 #define kTongJiSecret @""
+
+#define kAMapKey @""
+#define kAPNSKey @""
+
+#define kRootStoryBoard @""
+#define kRootController @""
+
+#define kRegisterUserKind 0
+#define kRegisterActionSegue @""
+#define kSigninLoginIdTitle @""
+#define kSigninActionSegue @""
+#define kMainController @""
 
 
 #ifdef DEBUG

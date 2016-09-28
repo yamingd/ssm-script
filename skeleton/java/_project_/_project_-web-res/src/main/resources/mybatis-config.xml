@@ -5,5 +5,7 @@
 <configuration>
     <settings>
         <setting name="defaultStatementTimeout" value="10"/> <!-- seconds -->
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+        <setting name="defaultExecutorType" value="REUSE" />
     </settings>
 </configuration>

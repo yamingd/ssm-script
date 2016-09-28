@@ -17,6 +17,8 @@
 
     <bean class="com.{{prj._company_}}.{{prj._name_}}.factory.RedisBucketBeanFactory" />
 
+    <bean class="com.{{prj._company_}}.{{prj._name_}}.factory.AsyncTaskPoolFactory" />
+
     <bean class="com.{{prj._company_}}.{{prj._name_}}.mybatis.MybatisCacheBeanFactory" />
 
     <bean id="mybatisMapperHelper" class="com.{{prj._company_}}.{{prj._name_}}.mybatis.MapperHelperExt" />
@@ -43,5 +45,15 @@
                                 expression=".*TestCase" />
 
     </context:component-scan>
+
+    <bean name="quartzScheduler" lazy-init="false"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+        <property name="configLocation" value="classpath:quartz.properties" />
+        <property name="autoStartup" value="true" />
+        <property name="jobFactory">
+            <bean class="org.springframework.scheduling.quartz.SpringBeanJobFactory" />
+        </property>
+    </bean>
 
 </beans>

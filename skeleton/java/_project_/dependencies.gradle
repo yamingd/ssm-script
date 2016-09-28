@@ -1,7 +1,7 @@
 ext{
 
     V_ARGO_SECURITY = "2.3.3"
-    V_ARGO_UTIL = "2.2.0"
+    V_ARGO_UTIL = "2.2.1"
     V_ARGO_REDIS = "2.4.0"
     V_ARGO_FREEEMARKER = "2.2.0"
     V_ARGO_ANNOTATIONS = "2.2.0"
@@ -14,11 +14,11 @@ ext{
     V_GUAVA = "18.0"
 
     V_SPRING = "3.2.12.RELEASE"
-    V_MYBATIS = "3.3.1"
-    V_MYBATIS_SPRING = "1.2.5"
-    V_MYBATIS_MAPPER = "3.3.8"
+    V_MYBATIS = "3.4.1"
+    V_MYBATIS_SPRING = "1.3.0"
+    V_MYBATIS_MAPPER = "3.3.9"
     V_MYBATIS_PAGER = "4.1.6"
-    V_MYBATIS_GEN = "1.3.2"
+    V_MYBATIS_GEN = "1.3.5"
 
     V_KRYO = "4.0.0"
     V_LOG4j = "2.6.2"
@@ -74,7 +74,8 @@ ext{
             javatuples : "org.javatuples:javatuples:1.2",
             jsoup : "org.jsoup:jsoup:1.8.3",
             fastjson : "com.alibaba:fastjson:1.2.8",
-            junit: "junit:junit:4.12"
+            junit: "junit:junit:4.12",
+            quartz: "org.quartz-scheduler:quartz:2.2.2"
     ]
 
     logDependencies = [
@@ -100,5 +101,9 @@ ext{
     aopDependencies = [
             aspectjrt : "org.aspectj:aspectjrt:1.8.7",
             aspectjweaver : "org.aspectj:aspectjweaver:1.8.7"
+    ]
+
+    pluginDependencies = [
+            qiniu : 'com.qiniu:qiniu-java-sdk:7.1.+'
     ]
 }

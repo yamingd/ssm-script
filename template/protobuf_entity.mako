@@ -1,3 +1,4 @@
+syntax = "proto2";
 {% for r in _tbi_.impPBs %}
 import "{{ r.name }}Proto.proto";
 {% endfor %}

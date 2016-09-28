@@ -1,19 +1,16 @@
 //
-//  PBMapperInit.h
+//  pb-models-all.h
 //  {{prj._project_}}
 //
 //  Created by {{_user_}}.
 //  Copyright © 2015 {{prj._company_}}. All rights reserved.
 //
 
+#ifndef PB_MODELS_ALL_H
+#define PB_MODELS_ALL_H
+
 {% for t in ms %}
-@class {{t.pb.name}}Mapper;
+#import "{{t.pb.name}}Proto.pb.h"
 {% endfor %}
 
-@interface PBMapperInit : NSObject
-
-+(instancetype)instance;
-
--(void)start;
-
-@end
+#endif

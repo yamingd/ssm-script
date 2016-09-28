@@ -11,31 +11,32 @@ import dbm
 from common import *
 
 IOS_MAPPER_BASE_FOLDER = 'ios/_project_/_project_/Mappers'
+IOS_MODEL_BASE_FOLDER = 'ios/_project_/_project_/Models'
 
-# def gen_model(prjinfo, minfo):
-#     outfolder = os.path.join(prjinfo._root_, 'models')
-#     outfolder = format_line(outfolder, prjinfo)
-#     fpath = os.path.join(outfolder, minfo['ns'])
-#     if not os.path.exists(fpath):
-#         os.makedirs(fpath)
+def gen_model(prjinfo):
+    outfolder = os.path.join(prjinfo._root_, IOS_MODEL_BASE_FOLDER)
+    outfolder = format_line(outfolder, prjinfo)
+    if not os.path.exists(outfolder):
+        os.makedirs(outfolder)
 
-#     kwargs = {}
-#     kwargs['prj'] = prjinfo
-#     kwargs['emm'] = prjinfo.emm
-#     kwargs['minfo'] = minfo
-#     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#     kwargs['_module_'] = minfo['ns']
-#     kwargs['_refs_'] = minfo['ref']
-    
-#     for table in minfo['tables']:
-#         kwargs['_tbi_'] = table
-#         kwargs['_cols_'] = table.columns
-#         kwargs['_pks_'] = table.pks
-#         fname = os.path.join(fpath, 'TS' + table.entityName + '.hh')
-#         render_template(fname, 'ios-entity-hh.mako', **kwargs)
+    kwargs = {}
+    kwargs['prj'] = prjinfo
+    kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
 
-#         fname = os.path.join(fpath, 'TS' + table.entityName + '.mm')
-#         render_template(fname, 'ios-entity-mm.mako', **kwargs)
+    ms = []
+    for minfo in prjinfo._modules_:
+        if not minfo.get('protoc', True):
+            continue
+        pbexcludes = minfo.get('pbexcludes', [])    
+        for table in minfo['tables']:
+            if table.name in pbexcludes:
+                continue
+            ms.append(table)
+    kwargs['ms'] = ms        
+    fpath = os.path.join(outfolder, 'pb-models-all.h')
+    if os.path.exists(fpath):
+        os.remove(fpath)
+    render_template(fpath, 'ios-pb-all.mako', **kwargs)
 
 
 def gen_mapper(prjinfo, minfo):
@@ -52,7 +53,10 @@ def gen_mapper(prjinfo, minfo):
     kwargs['_module_'] = minfo['ns']
 
     # protobuf mapper
+    pbexcludes = minfo.get('pbexcludes', [])
     for table in minfo['tables']:
+        if table.name in pbexcludes:
+            continue
         kwargs['_tbi_'] = table
         fpath = os.path.join(outfolder, table.pb.name + "Mapper.h")
         if os.path.exists(fpath):
@@ -71,7 +75,17 @@ def gen_mapper_init(prjinfo):
     kwargs = {}
     kwargs['prj'] = prjinfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
-    
+
+    ms = []
+    for minfo in prjinfo._modules_:
+        if not minfo.get('protoc', True):
+            continue
+        pbexcludes = minfo.get('pbexcludes', [])    
+        for table in minfo['tables']:
+            if table.name in pbexcludes:
+                continue
+            ms.append(table)
+    kwargs['ms'] = ms        
     fpath = os.path.join(outfolder, 'PBMapperInit.h')
     if os.path.exists(fpath):
         os.remove(fpath)
@@ -94,8 +108,11 @@ def gen_service(prjinfo, minfo):
     kwargs['minfo'] = minfo
     kwargs['_now_'] = datetime.now().strftime('%Y-%m-%d %H:%M')
     kwargs['_module_'] = minfo['ns']
-    
+
+    pbexcludes = minfo.get('pbexcludes', [])    
     for name in minfo['tables']:
+        if name in pbexcludes:
+            continue
         table = prjinfo._tbrefs_[name]
         kwargs['_tbi_'] = table
         fname = os.path.join(fpath, table.pb.name + 'Service.h')
@@ -119,14 +136,15 @@ def start(prjinfo):
     dbm.read_tables(prjinfo)
 
     for minfo in prjinfo._modules_:
-        if minfo['ns'] == 'system':
+        if 'protoc' in minfo and not minfo['protoc']:
             continue
         gen_mapper(prjinfo, minfo)
 
     gen_mapper_init(prjinfo)
-
+    gen_model(prjinfo)
+    
     for minfo in prjinfo.mobile:
-        if minfo['ns'] == 'system':
+        if 'protoc' in minfo and not minfo['protoc']:
             continue
         gen_service(prjinfo, minfo)
         gen_controller_folder(prjinfo, minfo)
