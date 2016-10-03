@@ -27,5 +27,8 @@
 -(void)wrap{{r.pb.nameC}}List:(NSArray*)builders;
 {% endfor %}
 
+{% for r in _tbi_.linkModels %}
+-(void)wrap{{r.getterName}}:(NSArray*)builders;
+{% endfor %}
 
 @end

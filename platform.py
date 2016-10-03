@@ -173,22 +173,22 @@ class MySqlQueryFunc(object):
 
     @property
     def name(self):
-        s = [common.upper_first(c.name) for c in self.cols]
+        s = [common.upper_first(c.java.name) for c in self.cols]
         return ''.join(s)
     
     @property
     def nameWithDot(self):
-        s = [common.upper_first(c.name) for c in self.cols]
+        s = [c.java.name for c in self.cols]
         return ', '.join(s)
 
     @property
     def arglist(self):
-        s = ['%s %s' % (c.java.typeName, c.name) for c in self.cols]
+        s = ['%s %s' % (c.java.typeName, c.java.name) for c in self.cols]
         return ', '.join(s)
     
     @property
     def varlist(self):
-        s = [c.name for c in self.cols]
+        s = [c.java.name for c in self.cols]
         return ', '.join(s)
     
     @property
@@ -196,6 +196,21 @@ class MySqlQueryFunc(object):
         s = ['%s = ?' % (c.name, ) for c in self.cols]
         return ' and '.join(s)
 
+
+class Link(object):
+    """docstring for Link"""
+    def __init__(self, parentTbl, childTbl):
+        self.parent = parentTbl
+        self.child = childTbl
+        self.nameC = common.gen_name(self.child.name.replace(self.parent.name, "")[1:]) # 下划线分隔
+        self.name = common.lower_first(self.nameC)
+        self.getterName = '%sList' % self.nameC
+        self.setterName = '%sList' % self.nameC
+        self.varName = '%sList' % self.name
+        self.comment = u'关联读取 @see %s' % (self.child.java.name) 
+        self.queryFunc = 'findBy%sId' % (self.parent.java.name)
+        self.queryField = '%sId' % (self.parent.java.varName)
+        self.pbMark = 'repeated'
 
 class MySqlTable(object):
     """docstring for MySqlTable"""
@@ -212,6 +227,10 @@ class MySqlTable(object):
         self.cmaps = {}
         self.cindex = {}
         self.prefix = prefix
+        self.links = []
+        self.linkModels = [] # MySqlTable
+        self.linkFuncs = []
+        self.linkFuncNames = []
 
     def initJava(self):
         self.java = JavaClass(self)
@@ -247,37 +266,53 @@ class MySqlTable(object):
             if c.ref:
                 self.refFields.append(c.ref)
                 if c.ref.table.name != self.name:
-                    self.impJavas.append(c.ref)
+                    self.impJavas.append(c.ref.java.refJava)
                     if not 't_sys' in c.comment:
-                        self.impPBs.append(c.ref)
+                        self.impPBs.append(c.ref.pb.refpb)
 
+    def uniqueImp(self):
         tmp = {}
         for r in self.impJavas:
-            tmp[r.java.refJava.name] = r.java.refJava
+            tmp[r.name] = r
         self.impJavas = tmp.values()
         #print tmp.keys()
 
         tmp = {}
         for r in self.impPBs:
-            tmp[r.pb.typeName] = r.pb.refpb
+            tmp[r.name] = r
         self.impPBs = tmp.values()
     
+    def initLinks(self, obj_pkgs):
+        for name in self.links:
+            child = obj_pkgs[name]
+            link = Link(self, child)
+            self.linkModels.append(link)
+            self.impPBs.append(child.pb)
+            self.impJavas.append(child.java)
+            child.linkFuncs.append(link)
+            child.linkFuncNames.append('%sId' % self.java.name)
+            # print child.linkFuncNames
+
     def initQueryFuncs(self):
         vals = self.cindex.values()
         fs = {}
+        # print self.linkFuncNames
         for v in vals:
             j = 1
             unique = v[0]
             for i in range(1, len(v)):
                 if i > 1:
                     qf = MySqlQueryFunc([v[i]])
-                    qf.unique = False
-                    fs[qf.name] = qf
+                    if qf.name not in self.linkFuncNames:
+                        qf.unique = False
+                        fs[qf.name] = qf
                 j += 1
                 qf = MySqlQueryFunc(v[1:j])
                 #print i, j, qf, qf.cols
                 qf.unique = unique if len(v) == j else False
-                fs[qf.name] = qf
+                if qf.name not in self.linkFuncNames:
+                    fs[qf.name] = qf
+
         self.funcs = fs.values()
         #print fs
 

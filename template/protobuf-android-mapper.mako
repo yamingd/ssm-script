@@ -118,6 +118,15 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     }
 {% endif %}
 {% endfor %}
+
+{% for r in _tbi_.linkModels %}
+    // 保存 {{ r.getterName }}
+    List<{{ r.child.pb.name }}> {{r.varName}} = o.get{{ r.getterName }}List();
+    if({{r.varName}}.size() > 0){
+        {{ r.child.pb.name }}Mapper.instance.saveWithRef({{r.varName}});
+    }
+{% endfor %}
+
     return true;
   }
 
@@ -145,6 +154,21 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     }
     if(vars.size() > 0){
       {{ r.pb.typeName }}Mapper.instance.saveWithRef(vars);
+    }
+    vars.clear();
+{% endfor %}
+
+{% for r in _tbi_.linkModels %}
+    // 保存 {{ r.getterName }}
+    for(int i=0; i<list.size(); i++) {
+      {{_tbi_.pb.name}} o = list.get(i);
+      List<{{ r.child.pb.name }}> {{r.varName}} = o.get{{ r.getterName }}List();
+      if({{r.varName}}.size() > 0){
+        vars.add({{r.varName}});
+      }
+    }
+    if(vars.size() > 0){
+      {{ r.child.pb.name }}Mapper.instance.saveWithRef(vars);
     }
     vars.clear();
 {% endfor %}
@@ -303,5 +327,17 @@ public class {{_tbi_.pb.name}}Mapper extends SqliteMapper<{{_tbi_.pb.name}}, {{_
     o = builder.build();
 
   }
+
+{% for r in _tbi_.linkModels %}
+  public void wrap{{r.getterName}}({{_tbi_.pb.name}}.Builder builder) {
+    {{ _tbi_.pk.java.typeName }} val = build.get{{ _tbi_.pk.pb.nameC }}();
+    if (null == val || val <= 0) {
+        return;
+    }
+    List<{{ r.child.java.name }}> tmp = {{ r.child.pb.name}}Mapper.instance.select("{{ r.queryField }} = ?", null, new String[]{ val + ""});
+    builder.addAll{{r.setterName}}(tmp);
+  }
+
+{% endfor %}
 
 }

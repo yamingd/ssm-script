@@ -155,7 +155,7 @@ public class {{_tbi_.java.name}}ServiceImplTest extends ServiceTestCaseBase {
     public void test_findBy{{ qf.name }}(){
         UserIdentity currentUser = null;
 {% for c in qf.cols %}        
-        {{c.java.typeName}} {{c.name}} = null;
+        {{c.java.typeName}} {{c.java.name}} = null;
 {% endfor %}
         try{
             {{_tbi_.java.name}} item = {{_tbi_.java.varName}}ServiceImpl.findBy{{ qf.name }}(currentUser, {{ qf.varlist }});
@@ -172,7 +172,7 @@ public class {{_tbi_.java.name}}ServiceImplTest extends ServiceTestCaseBase {
         resultSet.setSize(20);
         resultSet.setIndex(1);
 {% for c in qf.cols %}
-        {{c.java.typeName}} {{c.name}} = null;
+        {{c.java.typeName}} {{c.java.name}} = null;
 {% endfor %}
         try {
             resultSet = {{_tbi_.java.varName}}ServiceImpl.findBy{{ qf.name }}(currentUser, resultSet, {{ qf.varlist }});

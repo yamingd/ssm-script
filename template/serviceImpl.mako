@@ -161,6 +161,18 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
         return resultSet;
     }
 
+{% for lc in _tbi_.linkFuncs %}
+    @Override
+    public List<{{_tbi_.java.name}}> {{ lc.queryFunc }}(UserIdentity currentUser, {{ lc.parent.pk.java.typeName }} {{ lc.queryField }}) throws ServiceException {
+        {{_tbi_.java.name}} criteria = new {{_tbi_.java.name}}();
+        criteria.set{{ lc.parent.java.name }}Id({{ lc.queryField }});
+        // 读取全部
+        List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}MapperSlave.select(criteria);
+        return list;
+    }
+
+{% endfor %}    
+
 {% for qf in _tbi_.funcs %}
 {% if qf.unique %}
     @Override
@@ -177,7 +189,7 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
     public Pagination<{{_tbi_.java.name}}> findBy{{ qf.name }}(UserIdentity user, Pagination<{{_tbi_.java.name}}> resultSet, {{ qf.arglist }}) throws ServiceException {
         {{_tbi_.java.name}} criteria = new {{_tbi_.java.name}}();
 {% for c in qf.cols %}        
-        criteria.set{{ c.java.setterName }}({{ c.name }});
+        criteria.set{{ c.java.setterName }}({{ c.java.name }});
 {% endfor %}
         if (resultSet.getSize() > 0) {
             // 分页读取

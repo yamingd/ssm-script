@@ -14,11 +14,19 @@ message {{_tbi_.pb.name}} {
 {% endfor %}
 
 {% set count = _tbi_.columns | length %}
+
 {% for r in _tbi_.refFields %}
 {% if 't_sys' not in r.comment %}
     {{ r.pb.mark }} {{ r.pb.package }}{{ r.pb.typeName }} {{ r.pb.name }} = {{ count + 1}};
 {% set count = count +1 %}
 {% endif %}
+{% endfor %}
+
+{% set count = count + _tbi_.refFields | length %}
+
+{% for r in _tbi_.linkModels %}
+    {{ r.pbMark }} {{ r.child.pb.package }}.{{ r.child.pb.name }} {{ r.varName }} = {{ count + 1}};
+{% set count = count +1 %}
 {% endfor %}
 
 }

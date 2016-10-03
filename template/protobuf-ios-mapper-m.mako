@@ -144,6 +144,18 @@
 }
 {% endfor %} 
 
+{% for r in _tbi_.linkModels %}
+-(void)wrap{{r.getterName}}:(NSArray*)builders{
+    for({{ _tbi_.pb.name }}Builder* builder in builders){
+        id val = @(builder.{{r.child.pk.pb.name}});
+        if(val && [builder has{{r.child.pk.pb.nameC}}]){
+           NSArray* items = [[{{ r.child.pb.name }}Mapper instance] select:@"wrap{{ r.getterName }}" where:@"{{ r.queryField }}=?" order:nil withArgs:@[val] withRef:YES];
+           [builder set{{ r.getterName }}Array:items];
+        }
+    }
+}
+{% endfor %}
+
 -(id)wrapList:(NSArray*)items withRef:(BOOL)ref{
     if(!items || items.count == 0){
         return items;
@@ -188,6 +200,15 @@
 {% endfor %}
 {% endif %}
 
+{% if _tbi_.linkModels %}
+{% for r in _tbi_.linkModels %}
+    // 保存{{ r.getterName }}
+    NSArray* {{ r.varName }} = pb.{{ r.varName }};
+    [[{{ r.child.pb.name }}Mapper instance] save:@"Save{{ r.getterName }}" withList:{{r.varName}} withRef:YES];
+    
+{% endfor %}
+{% endif %}
+
 }
 
 -(void)saveRefList:(NSArray*)items{
@@ -213,6 +234,19 @@
 
 {% endfor %}
 {% endif %}
+
+{% if _tbi_.linkModels %}
+{% for r in _tbi_.linkModels %}
+    // 保存{{ r.getterName }}
+    for({{_tbi_.pb.name}}* pb in items){
+        [vals addObjectsFromArray:pb.{{ r.varName }}];
+    }
+    [[{{ r.child.pb.name }}Mapper instance] save:@"Save{{ r.getterName }}" withList:vals withRef:YES];
+    [vals removeAllObjects];
+
+{% endfor %}
+{% endif %}
+
 }
 
 @end

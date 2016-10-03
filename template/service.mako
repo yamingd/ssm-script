@@ -26,6 +26,15 @@ public interface {{_tbi_.java.name}}Service extends ServiceBase<{{_tbi_.java.nam
      */
     Pagination<{{_tbi_.java.name}}> findAll(UserIdentity currentUser, Pagination<{{_tbi_.java.name}}> resultSet, {{_tbi_.java.name}} criteria) throws ServiceException;
 
+{% for lc in _tbi_.linkFuncs %}
+    /**
+     * 按{{ lc.parent.java.varName }}Id关联读取
+     * @param {{ lc.parent.java.varName }}Id
+     * @return Pagination
+     */
+    List<{{_tbi_.java.name}}> {{ lc.queryFunc }}(UserIdentity currentUser, {{lc.parent.pk.java.typeName}} {{ lc.parent.java.varName }}Id) throws ServiceException;
+{% endfor %}
+
 {% for qf in _tbi_.funcs %}
 {% if qf.unique %}
 	/**

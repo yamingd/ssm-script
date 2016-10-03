@@ -137,4 +137,30 @@ public class {{_tbi_.java.name}}WrapperImpl {
     }
 {% endfor %}
 
+{% for lc in _tbi_.linkModels %}
+    /**
+     * 加载引用关联的对象
+     * @param currentUser
+     * @param list
+     * @return List<{{lc.child.java.name}}>
+     * @throws ServiceException
+     */
+    public List<{{lc.child.java.name}}> wrap{{lc.nameC}}List(UserIdentity currentUser, List<{{_tbi_.java.name}}> list) throws ServiceException{
+        if(list==null || list.size() == 0){
+            return Collections.emptyList();
+        }
+        List<{{lc.child.java.name}}> result = new ArrayList<{{lc.child.java.name}}>();
+        for(int i=0; i<list.size(); i++){
+            {{_tbi_.java.name}} item = list.get(i);
+            if(null == item){
+                continue;
+            }
+            List<{{lc.child.java.name}}> refItems = {{lc.child.java.varName}}Service.{{ lc.queryFunc }}(currentUser, item.get{{_tbi_.pk.java.getterName}}());
+            item.set{{lc.setterName}}(refItems);
+            result.addAll(refItems);
+        }
+        return result;
+    }
+{% endfor %}
+
 }

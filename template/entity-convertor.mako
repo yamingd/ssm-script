@@ -74,7 +74,14 @@ public class {{_tbi_.java.name}}Convertor extends ConvertorBase{
 {% endif %}
 {% endif %}
 {% endfor %}
-        
+
+{% for lc in _tbi_.linkModels %}
+        List<{{lc.child.java.name}}> {{lc.varName}} = item.get{{ lc.getterName }}();
+        if(null != {{lc.varName}}){
+             builder.addAll{{ lc.getterName }}({{ lc.child.java.name }}Convertor.toPB({{lc.varName}}));
+        }
+{% endfor %}
+
         return builder.build();
     }
 

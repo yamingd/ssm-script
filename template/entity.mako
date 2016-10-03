@@ -47,5 +47,20 @@ public class {{_tbi_.java.name }} extends {{ _tbi_.java.name }}Gen implements Pr
 
 {% endfor %} 
 
+{% for lc in _tbi_.linkModels %}
+    /**
+     *
+     * {{lc.comment}}
+     */
+    @Transient
+    protected List<{{lc.child.java.name}}> {{lc.varName}};
+    public List<{{lc.child.java.name}}> get{{ lc.getterName }}(){
+        return this.{{ lc.varName }};
+    }
+    public void set{{ lc.setterName }}(List<{{ lc.child.java.name }}> {{ lc.varName }}){
+        this.{{ lc.varName }} = {{ lc.varName }};
+    }
+
+{% endfor %}
 
 }

@@ -71,7 +71,6 @@ def get_mysql_table_new(prj, pkg_name, db_name, tbl_name, prefix):
             idx[row[0]].append(c)
         else:
             idx[row[0]] = [row[2] == 0, c]
-    tbl.initQueryFuncs()
     return tbl
 
 def read_tables(prjinfo):
@@ -85,6 +84,7 @@ def read_tables(prjinfo):
         tbs = []
         for name in minfo['tables']:
             table = get_mysql_table_new(prjinfo, minfo['ns'], minfo['db'], name, prjinfo._tbprefix_)
+            table.links = minfo.get(name, [])
             tbs.append(table)
             tbrefs[name] = table
         minfo['tables'] = tbs
@@ -92,7 +92,12 @@ def read_tables(prjinfo):
     
     for t in tbrefs.values():
         t.initRef(tbrefs)
+        t.initLinks(tbrefs)
+        t.uniqueImp()
     
+    for t in tbrefs.values():
+        t.initQueryFuncs()
+
     prjinfo._tbrefs_ = tbrefs
     prjinfo._dbload_ = True
 
