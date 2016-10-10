@@ -54,6 +54,10 @@ public class {{_tbi_.java.name}}WrapperImpl {
         if(null == v0){
             return Collections.emptyList();
         }
+        v0 = v0.trim();
+        if (v0.length() == 0){
+            return Collections.emptyList();
+        }
         {{rc.java.typeName}} refItem = {{rc.java.refJava.varName}}Service.findList(currentUser, v0);
         item.set{{rc.java.setterName}}(refItem);
         return refItem;
@@ -93,7 +97,12 @@ public class {{_tbi_.java.name}}WrapperImpl {
             if(null == item){
                 continue;
             }
-            {{rc.java.typeName}} refItems = {{rc.java.refJava.varName}}Service.findList(currentUser, item.get{{rc.column.java.getterName}}());
+            {{rc.column.java.typeName}} v0 = item.get{{rc.column.java.getterName}}();
+            v0 = v0.trim();
+            if (v0.length() == 0){
+                continue;
+            }
+            {{rc.java.typeName}} refItems = {{rc.java.refJava.varName}}Service.findList(currentUser, v0);
             item.set{{rc.java.setterName}}(refItems);
             result.addAll(refItems);
         }

@@ -38,7 +38,7 @@
 }
 
 -(void)ensureContext{
-    AppBootstrap *appDelegate = [[UIApplication sharedApplication] delegate];
+    AppBootstrap *appDelegate = (AppBootstrap*)[[UIApplication sharedApplication] delegate];
     self.sqliteContext = appDelegate.sqliteContext;
 }
 
@@ -189,13 +189,13 @@
 {% for r in _tbi_.refFields %}
     // 保存 {{r.pb.nameC}}
     id {{r.pb.name}} =  pb.{{r.pb.name}};
-    if ({{r.pb.name}}){
 {% if r.repeated %}
-        [[{{ r.pb.typeName }}Mapper instance] save:@"{{_tbi_.pb.name}}SaveRef" withList:{{r.pb.name}} withRef:YES];
+    [[{{ r.pb.typeName }}Mapper instance] save:@"{{_tbi_.pb.name}}SaveRef" withList:{{r.pb.name}} withRef:YES];
 {% else %}
+    if (pb.has{{r.pb.nameC}}){
         [[{{ r.pb.typeName }}Mapper instance] save:@"{{_tbi_.pb.name}}SaveRef" withItem:{{r.pb.name}} withRef:YES];
-{% endif %}
     }
+{% endif %}
 
 {% endfor %}
 {% endif %}
@@ -221,13 +221,13 @@
     // 保存 {{r.pb.nameC}}
     for({{_tbi_.pb.name}}* pb in items){
         id {{r.pb.name}} =  pb.{{r.pb.name}};
-        if ({{r.pb.name}}){
 {% if r.repeated %}
-            [vals addObjectsFromArray:{{r.pb.name}}];
+        [vals addObjectsFromArray:{{r.pb.name}}];
 {% else %}
+        if (pb.has{{r.pb.nameC}}){
             [vals addObject:{{r.pb.name}}];
-{% endif %}
         }
+{% endif %}
     }
     [[{{ r.pb.typeName }}Mapper instance] save:@"{{_tbi_.pb.name}}SaveRefList" withList:vals withRef:YES];
     [vals removeAllObjects];

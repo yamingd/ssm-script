@@ -76,7 +76,7 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 
     @Override
     public List<{{_tbi_.java.name}}> findList(UserIdentity currentUser, String idDots) {
-        if (idDots == null){
+        if (idDots == null || idDots.trim().length() == 0){
             return Collections.emptyList();
         }
         String[] tmp = idDots.split(",");
