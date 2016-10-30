@@ -1,5 +1,5 @@
 jdbc.driverClassName=com.mysql.jdbc.Driver
-jdbc.validationQuery=SELECT 1
+jdbc.validationQuery=/* ping */SELECT 1
 jdbc.maxActive=20
 jdbc.statement.timeout=10
 

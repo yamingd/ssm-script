@@ -1,9 +1,7 @@
 package {{ _tbi_.java.service_impl_ns }};
 
 import com.argo.collection.Pagination;
-import com.{{prj._company_}}.{{prj._name_}}.exception.EntityNotFoundException;
 import com.argo.security.UserIdentity;
-import com.{{prj._company_}}.{{prj._name_}}.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.base.Preconditions;
@@ -11,8 +9,11 @@ import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import tk.mybatis.mapper.entity.Example;
+import com.{{prj._company_}}.{{prj._name_}}.mapper.ExampleExt;
+
+import com.{{prj._company_}}.{{prj._name_}}.exception.EntityNotFoundException;
+import com.{{prj._company_}}.{{prj._name_}}.exception.ServiceException;
 
 import {{ _tbi_.java.model_ns }}.{{_tbi_.java.name}};
 import {{ _tbi_.java.mapper_ns }}.{{_tbi_.java.name}}Tx;
@@ -49,7 +50,11 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
     @Override
     public {{_tbi_.java.name}} find(UserIdentity currentUser, {{_tbi_.pk.java.typeName}} id) throws EntityNotFoundException {
         Preconditions.checkNotNull(id, "id is NULL");
-        return {{_tbi_.java.varName}}MapperSlave.selectByPrimaryKey(id);
+        {{_tbi_.java.name}} item = {{_tbi_.java.varName}}MapperSlave.selectByPrimaryKey(id);
+        if (null == item){
+            throw new EntityNotFoundException({{_tbi_.java.name}}.class.getSimpleName(), id);
+        }
+        return item;
     }
 
     @Override
@@ -144,20 +149,20 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 
     @Override
     public Pagination<{{_tbi_.java.name}}> findAll(UserIdentity currentUser, Pagination<{{_tbi_.java.name}}> resultSet, {{_tbi_.java.name}} criteria) throws ServiceException {
-        PageHelper.startPage(resultSet.getIndex(), resultSet.getSize());
-        PageHelper.orderBy("{{_tbi_.pk.name}} desc");
+        ExampleExt exampleExt = new ExampleExt({{_tbi_.java.name}}.class);
+        exampleExt.setPageSize(resultSet.getSize());
+        exampleExt.setOffset(resultSet.getOffset());
+        exampleExt.orderBy("{{_tbi_.pk.name}}");
+        Example.Criteria criteriaExt = exampleExt.createCriteria();
+        //TODO:
 
-        if (null == criteria) {
-            Page<{{_tbi_.java.name}}> page = (Page<{{_tbi_.java.name}}>){{_tbi_.java.varName}}MapperSlave.selectAll();
-            Long total = page.getTotal();
-            resultSet.setTotal(total.intValue());
-            resultSet.setItems(page.getResult());
-        }else{
-            Page<{{_tbi_.java.name}}> page = (Page<{{_tbi_.java.name}}>){{_tbi_.java.varName}}MapperSlave.select(criteria);
-            Long total = page.getTotal();
-            resultSet.setTotal(total.intValue());
-            resultSet.setItems(page.getResult());
-        }
+        // 读取
+        List<{{_tbi_.java.name}}> page = {{_tbi_.java.varName}}MapperSlave.selectLimitByExample(exampleExt);
+        int total = {{_tbi_.java.varName}}MapperSlave.selectCountByExample(exampleExt);
+
+        resultSet.setItems(page);
+        resultSet.setTotal(total);
+
         return resultSet;
     }
 
@@ -187,24 +192,38 @@ public class {{_tbi_.java.name}}ServiceImpl extends ServiceBaseImpl implements {
 {% else %}
     @Override
     public Pagination<{{_tbi_.java.name}}> findBy{{ qf.name }}(UserIdentity user, Pagination<{{_tbi_.java.name}}> resultSet, {{ qf.arglist }}) throws ServiceException {
-        {{_tbi_.java.name}} criteria = new {{_tbi_.java.name}}();
-{% for c in qf.cols %}        
-        criteria.set{{ c.java.setterName }}({{ c.java.name }});
-{% endfor %}
+        
         if (resultSet.getSize() > 0) {
             // 分页读取
-            PageHelper.startPage(resultSet.getIndex(), resultSet.getSize());
-            PageHelper.orderBy("{{_tbi_.pk.name}}");
-            Page<{{_tbi_.java.name}}> page = (Page<{{_tbi_.java.name}}>) {{_tbi_.java.varName}}MapperSlave.select(criteria);
-            Long total = page.getTotal();
-            resultSet.setTotal(total.intValue());
-            resultSet.setItems(page.getResult());
+            ExampleExt exampleExt = new ExampleExt({{_tbi_.java.name}}.class);
+            exampleExt.setPageSize(resultSet.getSize());
+            exampleExt.setOffset(resultSet.getOffset());
+            exampleExt.orderBy("{{_tbi_.pk.name}}");
+            Example.Criteria criteria = exampleExt.createCriteria();
+            //查询条件:
+{% for c in qf.cols %}        
+            criteria.andEqualTo("{{c.java.name}}", {{ c.java.name }});
+{% endfor %}
+            // 读取
+            List<{{_tbi_.java.name}}> page = {{_tbi_.java.varName}}MapperSlave.selectLimitByExample(exampleExt);
+            int total = {{_tbi_.java.varName}}MapperSlave.selectCountByExample(exampleExt);
+
+            resultSet.setItems(page);
+            resultSet.setTotal(total);
+
             return resultSet;
+
         }else{
+
+            {{_tbi_.java.name}} criteria = new {{_tbi_.java.name}}();
+            {% for c in qf.cols %}        
+            criteria.set{{ c.java.setterName }}({{ c.java.name }});
+            {% endfor %}
             // 读取全部
             List<{{_tbi_.java.name}}> list = {{_tbi_.java.varName}}MapperSlave.select(criteria);
             resultSet.setItems(list);
             return resultSet;
+
         }
     }
 {% endif %}

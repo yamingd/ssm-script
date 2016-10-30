@@ -2,15 +2,15 @@ ext{
 
     V_ARGO_SECURITY = "2.3.3"
     V_ARGO_UTIL = "2.2.1"
-    V_ARGO_REDIS = "2.4.0"
+    V_ARGO_REDIS = "2.4.4"
     V_ARGO_FREEEMARKER = "2.2.0"
     V_ARGO_ANNOTATIONS = "2.2.0"
-    V_ARGO_WEB = "2.5.0"
+    V_ARGO_WEB = "3.0.1"
     V_ARGO_MAIL = "2.1.6"
 
-    V_DRUID = "1.0.18"
+    V_DRUID = "1.0.26"
     V_MYSQL = "5.1.36"
-    V_PROTOBUF = "2.6.1"
+    V_PROTOBUF = "3.0.2"
     V_GUAVA = "18.0"
 
     V_SPRING = "3.2.12.RELEASE"
@@ -105,5 +105,17 @@ ext{
 
     pluginDependencies = [
             qiniu : 'com.qiniu:qiniu-java-sdk:7.1.+'
+    ]
+
+    txDependencies = [
+            jta: 'javax.transaction:jta:1.1'
+    ]
+
+    xaDependencies = [
+            tx: 'com.atomikos:transactions:4.0.4',
+            util: 'com.atomikos:atomikos-util:4.0.4',
+            api: 'com.atomikos:transactions-api:4.0.4',
+            jta: 'com.atomikos:transactions-jta:4.0.4',
+            jdbc: 'com.atomikos:transactions-jdbc:4.0.4'
     ]
 }

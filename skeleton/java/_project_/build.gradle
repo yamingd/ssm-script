@@ -79,7 +79,14 @@ subprojects {
         compile rootProject.ext.logDependencies.slf4j
         compile rootProject.ext.logDependencies.logback
         compile rootProject.ext.commonDependencies.quartz
+
+        compile rootProject.ext.txDependencies.jta
+        compile rootProject.ext.xaDependencies.tx
+        compile rootProject.ext.xaDependencies.util
+        compile rootProject.ext.xaDependencies.api
+        compile rootProject.ext.xaDependencies.jta
+        compile rootProject.ext.xaDependencies.jdbc
     }
 
-      apply from: '../jarwrap.gradle'
+    // apply from: '../jarwrap.gradle'
 }

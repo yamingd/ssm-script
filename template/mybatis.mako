@@ -21,9 +21,9 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		<property name="testWhileIdle" value="true"/>
 		<property name="testOnBorrow" value="false"/>
 		<property name="testOnReturn" value="false"/>
-		<property name="poolPreparedStatements" value="true"/>
-		<property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
 		<property name="connectionInitSqls" value="set names utf8mb4;"/>
+		<property name="removeAbandoned" value="true" />
+		<property name="logAbandoned" value="true" />
 	</bean>
 
 	<!-- 只读模式 -->
@@ -63,15 +63,21 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	</bean>
 
 	<!-- 写模式 -->
-	<bean name="{{ _module_ }}_dataSource_w" parent="{{ _module_ }}_parentDataSource">
+	<bean name="{{ _module_ }}_dataSource_w" parent="{{ _module_ }}_parentDataSource" class="com.alibaba.druid.pool.xa.DruidXADataSource">
 		<property name="name" value="{{ _module_ }}_dataSource_w" />
 		<property name="url" value="${jdbc.{{ _module_ }}.url}" />
 		<property name="username" value="${jdbc.{{ _module_ }}.user}" />
 		<property name="password" value="${jdbc.{{ _module_ }}.password}" />
 	</bean>
 
+	<bean id="{{ _module_ }}_dataSource_wxa" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+        <property name="uniqueResourceName" value="{{ _module_ }}_dataSource_wxa"/>
+        <property name="xaDataSource" ref="{{ _module_ }}_dataSource_w"/>
+        <property name="maxPoolSize" value="3" />
+    </bean>
+
 	<bean id="{{ _module_ }}_sqlSessionFactory_w" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="{{ _module_ }}_dataSource_w" />
+		<property name="dataSource" ref="{{ _module_ }}_dataSource_wxa" />
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
 		<property name="mapperLocations" value="classpath:mapper/{{_module_}}/*.xml" />
 		<property name="plugins">
@@ -98,9 +104,24 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
         </property>
 	</bean>
 
-	<bean id="{{ _module_ }}_transactionManager_w" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<!-- 	<bean id="{{ _module_ }}_transactionManager_w" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="{{ _module_ }}_dataSource_w" />
 		<qualifier value="{{ _module_ }}Tx"/>
-	</bean>
+	</bean> -->
+
+	<bean id="{{ _module_ }}_transactionManager_w" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
+        <description>{{ _module_ }}_transactionManager_w</description>
+        <property name="forceShutdown" value="false" /> 
+    </bean>
+
+    <bean id="{{ _module_ }}_userTxImpl" class="com.atomikos.icatch.jta.UserTransactionImp">
+        <property name="transactionTimeout" value="300" />
+    </bean>
+
+    <bean id="{{ _module_ }}_JtaTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" >
+        <property name="transactionManager" ref="{{ _module_ }}_transactionManager_w" /> 
+        <property name="userTransaction" ref="{{ _module_ }}_userTxImpl" /> 
+        <qualifier value="{{ _module_ }}Tx"/>
+    </bean>
 
 </beans>
